@@ -156,7 +156,7 @@
         </li>
         <li>
           <a class="dropdown-item py-2" href="/histori">
-            Histori
+            Riwayat
           </a>
         </li>
         <li>

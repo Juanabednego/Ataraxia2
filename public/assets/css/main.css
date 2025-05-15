@@ -14,7 +14,7 @@
   --background-color: #ffffff;
   --default-color: #303030;
   --heading-color: #303030;
-  accent-color: #883899;
+  accent-color: #8174A0;
   --surface-color: #212529;
   --contrast-color: #212529;
 }
@@ -132,7 +132,7 @@ h6 {
 }
 
 .scrolled .header {
-  box-shadow: 0px 0 18px #cd02caca;
+  box-shadow: 0px 0 18px #8174A0;
 }
 
 /*--------------------------------------------------------------
@@ -619,7 +619,7 @@ section,
 
 h1 {
   color: #ffffff;
-  text-shadow: 2px 2px 4px #cc16ccd5;
+  text-shadow: 2px 2px 4px #8174A0;
 }
 
 .section-title h2 {
@@ -724,7 +724,7 @@ p {
   padding: 60px 0;
   display: flex;
   align-items: center;
-  background-color: #640183;
+  background-color: #8174A0;
   overflow: hidden;
 }
 
@@ -815,7 +815,7 @@ p {
 
 .button {
   display: inline-block;
-  background-color: #a033a0;
+  background-color: #8174A0;
   color: white;
   padding: 10px 20px;
   margin: 15px 0 25px 0;
@@ -827,7 +827,7 @@ p {
 }
 
 .button:hover {
-  background-color: #7a2680;
+  background-color: #594f72;
   transform: scale(1.05);
 }
 
@@ -862,7 +862,7 @@ p {
 
 .button-menu {
   display: inline-block;
-  background-color: #a033a0;
+  background-color: #8174A0;
   color: white;
   padding: 10px 20px;
   border-radius: 6px;
@@ -872,7 +872,7 @@ p {
 }
 
 .button:hover {
-  background-color: #7a2680;
+  background-color: #5f537c;
 }
 
 /*--------------------------------------------------------------
@@ -1250,9 +1250,9 @@ p {
 }
 
 .nav-btn {
-  border: 2px solid #7d01a2;
+  border: 2px solid #8174A0;
   background: white;
-  color: #7d01a2;
+  color: #8174A0;
   padding: 10px 15px;
   font-size: 20px;
   border-radius: 50%;
@@ -1261,6 +1261,6 @@ p {
 }
 
 .nav-btn:hover {
-  background: #7d01a2;
+  background: #61547e;
   color: white;
 }

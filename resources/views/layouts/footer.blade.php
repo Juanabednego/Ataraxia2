@@ -4,7 +4,7 @@
         <div class="col-lg-3 col-md-6 d-flex">
           <i class="bi bi-geo-alt icon"></i>
           <div class="address">
-            <h4>Address</h4>
+            <h4>Alamat</h4>
             <p>Jl. By Pass Balige, Tambunan,</p>
             <p>Kec. Balige, Toba, Sumatera Utara</p>
             <p></p>
@@ -14,7 +14,7 @@
         <div class="col-lg-3 col-md-6 d-flex">
           <i class="bi bi-telephone icon"></i>
           <div>
-            <h4>Contact</h4>
+            <h4>Kontak</h4>
             <p>
               <strong>Phone:</strong> <span>0812-6328-1469</span><br>
               <strong>Email:</strong> <span>ataraxia.balige@gmail.com</span><br>
@@ -25,9 +25,9 @@
         <div class="col-lg-3 col-md-6 d-flex">
           <i class="bi bi-clock icon"></i>
           <div>
-            <h4>Opening Hours</h4>
+            <h4>Jam Operasional</h4>
             <p>
-              <strong>Every Day:</strong> <span>10AM - 23PM</span><br>
+              <strong>Setiap Hari:</strong> <span>10:00 - 23:00</span><br>
             </p>
           </div>
         </div>

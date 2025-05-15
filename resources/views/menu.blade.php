@@ -25,7 +25,7 @@
 
         .filter-btns .btn.active,
         .filter-btns .btn:hover {
-            background-color: #a855f7;
+            background-color: #8174A0;
             color: #fff;
         }
 
@@ -60,7 +60,7 @@
 
         .price {
             font-size: 1.1rem;
-            color: #a855f7;
+            color: #8174A0;
             font-weight: bold;
         }
     </style>

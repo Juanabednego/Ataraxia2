@@ -73,6 +73,18 @@
 .nav-bold li a {
     font-weight: bold;
 }
+
+.navmenu ul li a {
+  text-decoration: none !important;
+}
+.navmenu ul li a:hover {
+  color: #8174A0; /* atau warna tema kamu */
+  text-decoration: none;
+}
+.logo {
+  text-decoration: none !important;
+}
+
 </style>
 </head>
 

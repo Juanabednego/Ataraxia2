@@ -61,10 +61,6 @@
   <div class="pagetitle">
     <h1>Dashboard</h1>
     <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index">Home</a></li>
-        <li class="breadcrumb-item active">Dashboard</li>
-      </ol>
     </nav>  
   </div>
   
@@ -80,9 +76,9 @@
                 <i class="bi bi-cart"></i>
               </div>
               <div class="ps-3">
-                <h6 class="card-title">Pesanan Baru</h6>
+                <h6 class="card-title">Pemesanan Baru</h6>
                 <span class="card-value">27</span>
-                <a href="#" class="more-info">
+                <a href="/tables-data" class="more-info">
                   More info <i class="bi bi-arrow-right"></i>
                 </a>
               </div>
@@ -117,7 +113,7 @@
           <div class="card-body">
             <div class="d-flex align-items-center">
               <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                <i class="bi bi-menu-button-wide"></i>
+                <i class="bi bi-cup-straw"></i>
               </div>
               <div class="ps-3">
                 <h6 class="card-title">Menu</h6>
@@ -137,12 +133,12 @@
           <div class="card-body">
             <div class="d-flex align-items-center">
               <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                <i class="bi bi-table"></i>
+                <i class="bi bi-star"></i>
               </div>
               <div class="ps-3">
-                <h6 class="card-title">Meja</h6>
+                <h6 class="card-title">Review</h6>
                 <span class="card-value">27</span>
-                <a href="/tables-data" class="more-info">
+                <a href="/kelola-review" class="more-info">
                   More info <i class="bi bi-arrow-right"></i>
                 </a>
               </div>
@@ -157,12 +153,50 @@
           <div class="card-body">
             <div class="d-flex align-items-center">
               <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                <i class="bi bi-book"></i>
+              </div>
+              <div class="ps-3">
+                <h6 class="card-title">About</h6>
+                <span class="card-value">27</span>
+                <a href="/kelola-about" class="more-info">
+                  More info <i class="bi bi-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xxl-4 col-md-6">
+        <div class="card info-card">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                 <i class="bi bi-bookmark-check"></i>
               </div>
               <div class="ps-3">
-                <h6 class="card-title">Reservasi</h6>
+                <h6 class="card-title">Reservation</h6>
                 <span class="card-value">27</span>
                 <a href="{{ route('admin.index') }}" class="more-info">
+                  More info <i class="bi bi-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xxl-4 col-md-6">
+        <div class="card info-card">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                <i class="bi bi-person-workspace"></i>
+              </div>
+              <div class="ps-3">
+                <h6 class="card-title">Kursi</h6>
+                <span class="card-value">27</span>
+                <a href="/seat-builder" class="more-info">
                   More info <i class="bi bi-arrow-right"></i>
                 </a>
               </div>

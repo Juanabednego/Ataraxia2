@@ -39,21 +39,8 @@
         <i class="bi bi-list toggle-sidebar-btn"></i>
       </div><!-- End Logo -->
   
-      <div class="search-bar">
-        <form class="search-form d-flex align-items-center" method="POST" action="#">
-          <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-          <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-        </form>
-      </div><!-- End Search Bar -->
-  
       <nav class="header-nav ms-auto">
         <ul class="d-flex align-items-center">
-  
-          <li class="nav-item d-block d-lg-none">
-            <a class="nav-link nav-icon search-bar-toggle " href="#">
-              <i class="bi bi-search"></i>
-            </a>
-          </li><!-- End Search Icon-->
   
           <li class="nav-item dropdown">
   
@@ -141,7 +128,7 @@
         </li>
         <li class="nav-item">
           <a class="nav-link "  href="/tables-data">
-            <i class="bi bi-bag"></i>
+            <i class="bi bi-cart"></i>
             <span>Pemesanan</span>
           </a>
         </li>
@@ -168,20 +155,20 @@
          <li class="nav-item">
                 <a class="nav-link" href="/kelola-about">
                     <i class="bi bi-book"></i>
-                    <span>Kelola About</span>
+                    <span>About</span>
                 </a>
             </li>
   
         <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.index') }}">
                     <i class="bi bi-bookmark-check"></i>
-                    <span>Kelola Reservation</span>
+                    <span>Reservation</span>
                 </a>
             </li>
      <li class="nav-item">
                <a class="nav-link" href="/seat-builder">
-                    <i class="bi bi-bookmark-check"></i>
-                    <span>Kelola Kursi</span>
+                    <i class="bi bi-person-workspace"></i>
+                    <span>Kursi</span>
                 </a>
             </li>
       </ul>

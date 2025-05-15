@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Admin Dashboard - Kelola Reservation</title>
-    <link href="{{ asset('admin/assets/img/favicon.png') }}" rel="icon">
+    <title>Kelola Reservation</title>
+    <link href="{{ asset('assets/img/Ataraxialogo.jpg') }}" rel="icon">
     <link href="{{ asset('admin/assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
@@ -43,58 +43,8 @@
         }
     </style>
 </head>
-
+@include('layouts.AdminNav')
 <body>
-<header id="header" class="header fixed-top d-flex align-items-center">
-    <div class="d-flex align-items-center justify-content-between">
-        <a href="{{ url('/') }}" class="logo d-flex align-items-center">
-            <img src="{{ asset('admin/assets/img/logo.png') }}" alt="">
-            <span class="d-none d-lg-block">Admin Dashboard</span>
-        </a>
-    </div>
-</header>
-
-<!-- Sidebar -->
-<aside id="sidebar" class="sidebar">
-    <ul class="sidebar-nav" id="sidebar-nav">
-        <li class="nav-item">
-            <a class="nav-link" href="/indexadmin">
-                <i class="bi bi-house-door"></i><span>Dashboard</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/kelola-menu">
-                <i class="bi bi-list"></i><span>Kelola Menu</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/kelola-about">
-                <i class="bi bi-info-circle"></i><span>Kelola About</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('admin.index') }}">
-                <i class="bi bi-calendar-event"></i><span>Kelola Event</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/tables-data">
-                <i class="bi bi-table"></i><span>Manage Table</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/footer">
-                <i class="bi bi-table"></i><span>Kelola Footer</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('admin.index') }}">
-                <i class="bi bi-table"></i><span>Kelola Reservation</span>
-            </a>
-        </li>
-    </ul>
-</aside>
-
 <main id="main" class="main"> 
 <div class="container mt-4">
         <div class="page-title">Kelola Reservasi</div>

@@ -192,67 +192,90 @@
         </div>
 
         <!-- Booking Section -->
-        <div class="mt-4">
-            <h4>Total Harga: <span id="totalPrice">Rp 0</span></h4>
-            <h5>Tempat Duduk: <span id="selectedSeats">-</span></h5>
-            <button id="confirmBooking" class="btn btn-success mt-2" disabled>Konfirmasi Pemesanan</button>
-            <button class="btn btn-danger mt-2" id="cancelSelection">Cancel</button>
-        </div>
+       <!-- Booking Section -->
+<div class="mt-5">
+  <div class="card shadow-lg border-0 rounded-4 p-4 bg-light">
+    <h4 class="mb-3 fw-semibold text-dark">
+      <i class="bi bi-cash-stack me-2 text-success"></i> Total Harga: 
+      <span id="totalPrice" class="text-success">Rp 0</span>
+    </h4>
+
+    <h5 class="mb-4 text-dark fw-normal">
+      <i class="bi bi-chair me-2 text-primary"></i> Tempat Duduk: 
+      <span id="selectedSeats" class="text-primary">-</span>
+    </h5>
+
+    <div class="d-flex gap-3">
+      <button id="confirmBooking" class="btn btn-success px-4 py-2 rounded-pill shadow-sm d-flex align-items-center" disabled>
+        <i class="bi bi-check2-circle me-2"></i> Konfirmasi Pemesanan
+      </button>
+
+      <button class="btn btn-outline-danger px-4 py-2 rounded-pill shadow-sm d-flex align-items-center" id="cancelSelection">
+        <i class="bi bi-x-circle me-2"></i> Batalkan
+      </button>
+    </div>
+  </div>
+</div>
+
     </div>
 
     @include('layouts.footer')
 
+<script>
+    const eventId = "{{ $eventId }}"; 
+    const seatPrice = @json($seatPrice ?? 0);  // Pastikan harga kursi dikirim dengan benar
+    console.log("Harga kursi dari database:", seatPrice); // Debug: pastikan harga kursi muncul di console
+</script>
+
+
     <script>
-  $(document).ready(function() {
-    const seatPrice = 150000;
+ $(document).ready(function() {
     let selectedSeats = [];
     const confirmButton = $("#confirmBooking");
 
-    // Function to load already booked seats and selected seats
+    // Fungsi untuk memuat kursi yang sudah dibooking
     function loadSeats() {
         $.ajax({
-            url: "{{ route('pilih-kursi') }}", // URL to get booked seat data
+            url: "{{ route('pilih-kursi') }}", // URL untuk mengambil data kursi yang sudah dibooking
             type: "GET",
             dataType: "json",
             success: function(response) {
                 console.log("Kursi yang sudah dipesan:", response.formattedSeats);
 
-                // Reset all seats first
-                $(".seat").removeClass("booked selected")
+                // Reset semua kursi terlebih dahulu (tetap mempertahankan kursi yang sudah dibooking)
+                $(".seat").removeClass("selected")
                     .css("background-color", "black")
                     .css("cursor", "pointer")
                     .off("click");
 
-                // Mark booked seats as booked (grey)
+                // Tandai kursi yang sudah dibooking (warna abu-abu)
                 response.formattedSeats.forEach(function(seat) {
                     $(".seat[data-seat='" + seat + "']")
                         .addClass("booked")
-                        .css("background-color", "grey")
-                        .css("cursor", "not-allowed")
-                        .off("click"); // Disable click for booked seats
+                        .css("background-color", "grey") // Set background menjadi abu-abu
+                        .css("cursor", "not-allowed") // Disable kursi yang sudah dibooking
+                        .off("click"); // Pastikan kursi yang dibooking tidak bisa dipilih
                 });
 
-                // Add click event only to non-booked seats
+                // Tambahkan event click hanya untuk kursi yang belum dibooking
                 $(".seat:not(.booked)").click(function() {
                     let seat = $(this).data("seat");
 
-                    // Prevent selecting the same seat again
                     if ($(this).hasClass("selected")) {
-                        $(this).removeClass("selected"); // Deselect the seat
-                        selectedSeats = selectedSeats.filter(s => s !== seat); // Remove from selectedSeats array
+                        $(this).removeClass("selected");
+                        selectedSeats = selectedSeats.filter(s => s !== seat); // Remove seat from selectedSeats
                     } else {
-                        // Ensure no duplicates are added to selectedSeats
                         if (!selectedSeats.includes(seat)) {
-                            $(this).addClass("selected");  // Change color to blue when selected
-                            selectedSeats.push(seat); // Add the seat to selection
+                            $(this).addClass("selected");
+                            selectedSeats.push(seat);
                         }
                     }
 
-                    // Update the displayed selected seats and total price
+                    // Update tampilan kursi yang dipilih dan total harga
                     $("#selectedSeats").text(selectedSeats.length > 0 ? selectedSeats.join(', ') : '-');
-                    $("#totalPrice").text(`Rp ${selectedSeats.length * seatPrice}`);
+                    $("#totalPrice").text(`Rp ${selectedSeats.length * seatPrice}`); // Total harga berdasarkan jumlah kursi yang dipilih
 
-                    // Disable confirm button if no seat is selected
+                    // Disable tombol konfirmasi jika tidak ada kursi yang dipilih
                     confirmButton.prop("disabled", selectedSeats.length === 0);
                 });
             },
@@ -262,39 +285,42 @@
         });
     }
 
-    // Call the loadSeats function initially when the page loads
-    loadSeats(); 
+    loadSeats(); // Panggil loadSeats saat halaman pertama kali dimuat
 
-    // Confirm booking when the user clicks on the "Confirm Booking" button
-    $("#confirmBooking").click(function() {
-        let selectedSeatsString = selectedSeats.join(', ');
+    // Proses booking saat tombol konfirmasi diklik
+   $("#confirmBooking").click(function() {
+    let selectedSeatsString = selectedSeats.join(', ');
 
-        $.post("{{ route('booking.store') }}", {
-            _token: "{{ csrf_token() }}",
-            seats: selectedSeatsString,
-            total_price: selectedSeats.length * seatPrice
-        }).done(function(response) {
-            if (response.booking_id) {
-                loadSeats();  // Reload seats to reflect the booking
-                window.location.href = `/payment?booking_id=${response.booking_id}`; // Redirect to payment page
-            } else {
-                alert("Terjadi kesalahan, silakan coba lagi.");
-            }
-        }).fail(function(xhr) {
-            console.error("Error dari backend:", xhr.responseText);
-            alert("Gagal menyimpan pemesanan, coba lagi!");
-        });
+    // Kirim data pemesanan ke backend (booking.store)
+    $.post("{{ route('booking.store') }}", {
+        _token: "{{ csrf_token() }}", // Sertakan CSRF token untuk keamanan
+        seats: selectedSeatsString,  // Kursi yang dipilih
+        total_price: selectedSeats.length * seatPrice, // Total harga
+        event_id: eventId // ID event
+    }).done(function(response) {
+        // Jika berhasil, lanjutkan ke halaman pembayaran
+        if (response.booking_id) {
+            loadSeats();  // Reload kursi yang sudah dibooking
+            window.location.href = `/payment?booking_id=${response.booking_id}`; // Redirect ke halaman pembayaran
+        } else {
+            alert("Terjadi kesalahan, silakan coba lagi.");
+        }
+    }).fail(function(xhr) {
+        console.error("Error dari backend:", xhr.responseText);
+        alert("Gagal menyimpan pemesanan, coba lagi!");
     });
+});
 
     // Batalkan pemilihan kursi
     $("#cancelSelection").click(function() {
-        $(".seat.selected").removeClass("selected"); // Remove the selected class
+        $(".seat.selected").removeClass("selected");
         selectedSeats = [];
         $("#selectedSeats").text('-');
         $("#totalPrice").text('Rp 0');
-        confirmButton.prop("disabled", true); // Disable the confirm button
+        confirmButton.prop("disabled", true);
     });
 });
+
 
     </script>
 

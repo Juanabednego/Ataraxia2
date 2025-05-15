@@ -18,9 +18,42 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FooterController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\AdminReservationController;
+use App\Http\Controllers\MakananController;
+use App\Http\Controllers\MenuController;
+use App\Http\Controllers\HistoriController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\ReviewUserController;
+use App\Http\Controllers\AboutSectionAdminController;
+use App\Http\Controllers\SeatLayoutController;
+use Laravel\Socialite\Facades\Socialite;
+use App\Http\Controllers\Auth\LoginController;
+
+Route::get('login/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
+Route::get('login/google/callback', [LoginController::class, 'handleGoogleCallback']);
+
+
+Route::get('/seat-builder', [SeatLayoutController::class, 'index'])->name('admin.seat-builder.index');
+Route::get('/admin/seat-builder', [SeatLayoutController::class, 'index'])->name('admin.seat-builder');
+Route::post('/admin/seat-builder/save', [SeatLayoutController::class, 'store'])->name('admin.seat-builder.save');
 
 
 
+
+
+Route::get('/kelola-about', [AboutSectionAdminController::class, 'index'])->name('admin.kelola-about.index');
+Route::get('/admin/kelola-about', [AboutSectionAdminController::class, 'edit']);
+Route::post('/admin/kelola-about', [AboutSectionAdminController::class, 'update']);
+
+
+Route::post('/review', [ReviewUserController::class, 'store'])->name('review.store');
+
+
+
+
+
+Route::get('/kelola-review', [ReviewController::class, 'index'])->name('admin.kelola-review.index');
+Route::get('/admin/kelola-review/{id}/edit', [ReviewController::class, 'edit'])->name('admin.kelola-review.edit');
+Route::patch('/admin/kelola-review/{id}', [ReviewController::class, 'update'])->name('admin.kelola-review.update');
 
 
 Route::middleware('auth')->group(function () {
@@ -68,7 +101,7 @@ Route::get('/footer', [FooterController::class, 'index'])->name('footer');
 
     Route::get('/kelola-event', [KelolaEventController::class, 'index'])->name('kelola-event');
     Route::post('/kelola-event/store', [KelolaEventController::class, 'store'])->name('kelola-event.store');
-    Route::post('/kelola-event/{id}', [KelolaEventController::class, 'update'])->name('kelola-event.update');
+    Route::patch('/kelola-event/{id}', [KelolaEventController::class, 'update'])->name('kelola-event.update');
     Route::delete('/kelola-event/{event}', [KelolaEventController::class, 'destroy'])->name('kelola-event.destroy');
 
     
@@ -82,6 +115,7 @@ Route::get('/footer', [FooterController::class, 'index'])->name('footer');
 Route::get('/index', function () {
     return view('index');
 })->name('index');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -113,3 +147,23 @@ Route::get('/notifikasi-user', [BookingController::class, 'getNotifikasiUser'])
     ->name('load-notifikasi');
 
     Route::get('/notifikasi-reservation', [AdminReservationController::class, 'getNotifikasiReservation'])->name('notif.reservation');
+
+
+
+    Route::get('/kelola-menu', [MakananController::class, 'index'])->name('kelola-menu.index');
+    Route::post('/kelola-menu', [MakananController::class, 'store'])->name('kelola-menu.store');
+    Route::put('/kelola-menu/{id}', [MakananController::class, 'update'])->name('kelola-menu.update');
+    // Route::delete('/kelola-menu/{id}', [MakananController::class, 'destroy'])->name('kelola-menu.destroy');
+    Route::delete('/kelola-menu/{makanan}', [MakananController::class, 'destroy'])->name('kelola-menu.destroy');
+
+    
+
+    Route::get('/menu', [MenuController::class, 'index'])->name('menu');
+
+    Route::get('/histori', [HistoriController::class, 'index'])->name('histori');
+
+    Route::get('/akun', function () {
+        return view('akun');
+    })->middleware('auth')->name('akun');
+    
+    

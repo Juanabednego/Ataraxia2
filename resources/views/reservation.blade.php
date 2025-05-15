@@ -9,7 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -90,46 +89,22 @@
 
     <!-- Step 1 -->
     <div id="step1">
-      <form>
+      <form id="step1Form" onsubmit="event.preventDefault(); if(validateStep1()) showStep(2);">
         <div class="mb-3">
           <label class="form-label">Adults</label>
-          <select class="form-select">
-          <option selected>0 Adult</option>
-            <option>1 Adult</option>
-            <option >2 Adults</option>
-            <option>3 Adults</option>
-            <option>4 Adult</option>
-            <option >5 Adults</option>
-            <option>6 Adults</option>
-            <option>7 Adult</option>
-            <option >8 Adults</option>
-            <option>9 Adults</option>
-            <option>10 Adults</option>
-          </select>
+          <input type="number" name="adults" class="form-control" id="adults" min="0" max="75" value="0" required placeholder="Masukkan jumlah dewasa" onfocus="clearZero(this)" />
         </div>
-        <div class="mb-3">  
+        <div class="mb-3">
           <label class="form-label">Children</label>
-          <select class="form-select">
-            <option selected>0 Child</option>
-            <option>1 Child</option>
-            <option>2 Children</option>
-            <option>3 Child</option>
-            <option>4 Children</option>
-            <option>5 Child</option>
-            <option>6 Children</option>
-            <option>7 Child</option>
-            <option>8 Children</option>
-            <option>9 Child</option>
-            <option>10 Children</option>
-          </select>
+          <input type="number" name="children" class="form-control" id="children" min="0" max="75" value="0" required placeholder="Masukkan jumlah anak-anak" onfocus="clearZero(this)" />
         </div>
         <div class="mb-3">
           <label class="form-label">Date</label>
-          <input type="date" class="form-control" value="2025-04-11" />
+          <input type="date" name="date" class="form-control" id="date" required min="{{ date('Y-m-d') }}" />
         </div>
         <div class="mb-3">
           <label class="form-label">Time</label>
-          <input type="time" class="form-control" value="12:00" />
+          <input type="time" name="time" class="form-control" id="time" required />
         </div>
 
         <div class="house-rules mb-3">
@@ -143,41 +118,41 @@
         </div>
 
         <div class="form-check mb-3">
-          <input class="form-check-input" type="checkbox" checked />
+          <input class="form-check-input" type="checkbox" id="agree" required />
           <label class="form-check-label">I have read and agree to the above terms and conditions.</label>
         </div>
+
         <div class="d-flex justify-content-between">
-          <a href="/" class="btn btn-secondary" >Back</a>
-          <button type="button" class="btn btn-primary" onclick="showStep(2)">Next</button>
+          <a href="/" class="btn btn-secondary">Back</a>
+          <button type="submit" class="btn btn-primary">Next</button>
         </div>
       </form>
     </div>
 
     <!-- Step 2 -->
     <div id="step2" style="display: none">
-      <form>
-        <h5 class="mb-4">
-          We have a table for you at <strong>Ataraxia</strong>
-        </h5>
+      <form id="step2Form" onsubmit="event.preventDefault(); showConfirmationModal();">
+        <h5 class="mb-4">We have a table for you at <strong>Ataraxia</strong></h5>
 
         <div class="row mb-3">
           <div class="col-md-2">
-            <select class="form-select">
-              <option>Mr.</option>
-              <option>Mrs.</option>
-              <option>Ms.</option>
+            <select name="title" class="form-select" id="title" required>
+              <option value="" disabled selected>Pilih</option>
+              <option value="Mr.">Mr.</option>
+              <option value="Mrs.">Mrs.</option>
+              <option value="Ms.">Ms.</option>
             </select>
           </div>
           <div class="col-md-5">
-            <input type="text" class="form-control" placeholder="First Name" required />
+            <input type="text" name="firstName" class="form-control" placeholder="First Name" id="firstName" required />
           </div>
           <div class="col-md-5">
-            <input type="text" class="form-control" placeholder="Last Name" />
+            <input type="text" name="lastName" class="form-control" placeholder="Last Name" id="lastName" />
           </div>
         </div>
 
         <div class="mb-3">
-          <input type="email" class="form-control" placeholder="Email Address" required />
+          <input type="email" name="email" class="form-control" placeholder="Email Address" id="email" required />
         </div>
 
         <div class="mb-3 row">
@@ -185,17 +160,16 @@
             <input type="text" class="form-control" value="+62" disabled />
           </div>
           <div class="col-md-9">
-            <input type="tel" class="form-control" placeholder="Phone Number" required />
+            <input type="tel" name="phone" class="form-control" placeholder="Phone Number" id="phone" required />
           </div>
         </div>
 
         <div class="mb-3">
-          <textarea class="form-control" maxlength="85" placeholder="Message (Maximum 85 characters.)"></textarea>
+          <textarea name="note" class="form-control" maxlength="85" placeholder="Message (Maximum 85 characters.)" id="note"></textarea>
         </div>
 
-
         <div class="form-check mb-4">
-          <input class="form-check-input" type="checkbox" />
+          <input class="form-check-input" type="checkbox" id="promotions" />
           <label class="form-check-label">
             I’d love to receive personalised dining recommendations and deals!
           </label>
@@ -208,76 +182,158 @@
       </form>
     </div>
   </div>
-   <!-- Modal Konfirmasi -->
-   <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmationModalLabel">Berhasil Mengirimkan Permintaan</h5>
-                </div>
-                <div class="modal-body text-center">
-                    <p>Anda akan mendapatkan notifikasi jika sudah dikonfirmasi</p>
-                </div>
-                <div class="modal-footer">
-                    <a href="/" class="btn btn-success w-100">Kembali ke Beranda</a>
-                </div>
-            </div>
+
+  <!-- Modal Konfirmasi Detail -->
+  <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmationModalLabel">Konfirmasi Detail Reservasi</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
         </div>
+        <div class="modal-body">
+          <p><strong>Jumlah Dewasa:</strong> <span id="confirmAdults"></span></p>
+          <p><strong>Jumlah Anak:</strong> <span id="confirmChildren"></span></p>
+          <p><strong>Tanggal:</strong> <span id="confirmDate"></span></p>
+          <p><strong>Waktu:</strong> <span id="confirmTime"></span></p>
+          <p><strong>Title:</strong> <span id="confirmTitle"></span></p>
+          <p><strong>Nama Depan:</strong> <span id="confirmFirstName"></span></p>
+          <p><strong>Nama Belakang:</strong> <span id="confirmLastName"></span></p>
+          <p><strong>Email:</strong> <span id="confirmEmail"></span></p>
+          <p><strong>Telepon:</strong> <span id="confirmPhone"></span></p>
+          <p><strong>Catatan:</strong> <span id="confirmNote"></span></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Edit Lagi</button>
+          <button type="button" class="btn btn-primary" id="confirmBookingBtn">Lanjutkan Pemesanan</button>
+        </div>
+      </div>
     </div>
   </div>
-  </div>
+
 @include('layouts.footer')
-  <script>
-    function showStep(step) {
-      document.getElementById("step1").style.display = step === 1 ? "block" : "none";
-      document.getElementById("step2").style.display = step === 2 ? "block" : "none";
-      document.getElementById("step-label-1").classList.toggle("inactive", step !== 1);
-      document.getElementById("step-label-2").classList.toggle("inactive", step !== 2);
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  function showStep(step) {
+    document.getElementById("step1").style.display = step === 1 ? "block" : "none";
+    document.getElementById("step2").style.display = step === 2 ? "block" : "none";
+    document.getElementById("step-label-1").classList.toggle("inactive", step !== 1);
+    document.getElementById("step-label-2").classList.toggle("inactive", step !== 2);
+  }
+
+  function clearZero(input) {
+    if(input.value === "0") input.value = "";
+  }
+
+  function validateStep1() {
+    const adults = document.getElementById("adults").value;
+    const children = document.getElementById("children").value;
+    const date = document.getElementById("date").value;
+    const time = document.getElementById("time").value;
+    const agree = document.getElementById("agree").checked;
+
+    if(adults === '' || children === '' || date === '' || time === '' || !agree) {
+      alert("Harap lengkapi semua kolom dan centang persetujuan.");
+      return false;
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
-  const formStep2 = document.querySelector("#step2 form");
-  formStep2.addEventListener("submit", async function (e) {
-    e.preventDefault();
+    // Validasi tanggal tidak boleh masa lalu
+    const selectedDate = new Date(date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if(selectedDate < today) {
+      alert("Tanggal tidak boleh di masa lalu.");
+      return false;
+    }
+
+    showStep(2);
+    return true;
+  }
+
+  function showConfirmationModal() {
+    // Ambil data dari form step 1 dan 2
+    const adults = document.getElementById("adults").value;
+    const children = document.getElementById("children").value;
+    const date = document.getElementById("date").value;
+    const time = document.getElementById("time").value;
+
+    const title = document.getElementById("title").value;
+    const firstName = document.getElementById("firstName").value;
+    const lastName = document.getElementById("lastName").value;
+    const email = document.getElementById("email").value;
+    const phone = document.getElementById("phone").value;
+    const note = document.getElementById("note").value;
+
+    // Validasi field wajib di step 2
+    if(!title || !firstName || !email || !phone) {
+      alert("Harap lengkapi semua kolom informasi.");
+      return;
+    }
+
+    // Tampilkan data di modal
+    document.getElementById("confirmAdults").innerText = adults;
+    document.getElementById("confirmChildren").innerText = children;
+    document.getElementById("confirmDate").innerText = date;
+    document.getElementById("confirmTime").innerText = time;
+    document.getElementById("confirmTitle").innerText = title;
+    document.getElementById("confirmFirstName").innerText = firstName;
+    document.getElementById("confirmLastName").innerText = lastName ? lastName : '-';
+    document.getElementById("confirmEmail").innerText = email;
+    document.getElementById("confirmPhone").innerText = phone;
+    document.getElementById("confirmNote").innerText = note ? note : '-';
+
+    // Tampilkan modal
+    const confirmationModal = new bootstrap.Modal(document.getElementById("confirmationModal"));
+    confirmationModal.show();
+
+    // Pasang event submit ketika klik tombol lanjutkan
+    document.getElementById("confirmBookingBtn").onclick = submitReservation;
+  }
+
+  async function submitReservation() {
+    // Kumpulkan data form
+    const adults = document.getElementById("adults").value;
+    const children = document.getElementById("children").value;
+    const people = `${adults} Adults, ${children} Children`;
+
+    const title = document.getElementById("title").value;
+    const firstName = document.getElementById("firstName").value;
+    const lastName = document.getElementById("lastName").value;
+    const name = `${title} ${firstName} ${lastName}`.trim();
 
     const data = {
-      name: document.querySelector('input[placeholder="First Name"]').value + ' ' +
-            document.querySelector('input[placeholder="Last Name"]').value,
-      email: document.querySelector('input[placeholder="Email Address"]').value,
-      phone: document.querySelector('input[placeholder="Phone Number"]').value,
-      date: document.querySelector('input[type="date"]').value,
-      time: document.querySelector('input[type="time"]').value,
-      people: document.querySelectorAll("select.form-select")[0].value + ', ' +
-              document.querySelectorAll("select.form-select")[1].value,
-      note: document.querySelector("textarea").value
+      name: name,
+      email: document.getElementById("email").value,
+      phone: document.getElementById("phone").value,
+      date: document.getElementById("date").value,
+      time: document.getElementById("time").value,
+      people: people,
+      note: document.getElementById("note").value,
+      _token: document.querySelector('meta[name="csrf-token"]').content
     };
 
     try {
-      const response = await fetch("/reservation", {
+      const response = await fetch("{{ route('reservation.store') }}", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-        },
+        headers: { "Content-Type": "application/json", "X-CSRF-TOKEN": data._token },
         body: JSON.stringify(data)
       });
 
       if (response.ok) {
-        const modal = new bootstrap.Modal(document.getElementById("confirmationModal"));
-        modal.show();
+        alert("Reservasi berhasil dikonfirmasi!");
+        window.location.href = "/";  // Redirect setelah sukses
       } else {
-        alert("Failed to save reservation.");
+        alert("Gagal mengirim reservasi, coba lagi.");
       }
     } catch (error) {
-      console.error("Error submitting reservation:", error);
-      alert("An error occurred.");
+      console.error("Error saat submit:", error);
+      alert("Terjadi kesalahan.");
     }
-  });
-});
+  }
+</script>
 
-
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 

@@ -226,30 +226,42 @@
     if(input.value === "0") input.value = "";
   }
 
-  function validateStep1() {
-    const adults = document.getElementById("adults").value;
-    const children = document.getElementById("children").value;
-    const date = document.getElementById("date").value;
-    const time = document.getElementById("time").value;
-    const agree = document.getElementById("agree").checked;
+ function validateStep1() {
+  const adults = parseInt(document.getElementById("adults").value, 10);
+  const children = parseInt(document.getElementById("children").value, 10);
+  const date = document.getElementById("date").value;
+  const time = document.getElementById("time").value;
+  const agree = document.getElementById("agree").checked;
 
-    if(adults === '' || children === '' || date === '' || time === '' || !agree) {
-      alert("Harap lengkapi semua kolom dan centang persetujuan.");
-      return false;
-    }
-
-    // Validasi tanggal tidak boleh masa lalu
-    const selectedDate = new Date(date);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    if(selectedDate < today) {
-      alert("Tanggal tidak boleh di masa lalu.");
-      return false;
-    }
-
-    showStep(2);
-    return true;
+  // Cek jika ada nilai kosong
+  if (isNaN(adults) || isNaN(children) || date === '' || time === '' || !agree) {
+    alert("Harap lengkapi semua kolom dan centang persetujuan.");
+    return false;
   }
+
+  // Validasi nilainya harus > 0
+  if (adults <= 0) {
+    alert("Jumlah dewasa harus lebih dari nol.");
+    return false;
+  }
+
+  if (children < 0) {
+    alert("Jumlah anak tidak boleh negatif.");
+    return false;
+  }
+
+  // Validasi tanggal tidak boleh masa lalu
+  const selectedDate = new Date(date);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  if (selectedDate < today) {
+    alert("Tanggal tidak boleh di masa lalu.");
+    return false;
+  }
+
+  showStep(2);
+  return true;
+}
 
   function showConfirmationModal() {
     // Ambil data dari form step 1 dan 2
@@ -295,12 +307,12 @@
     // Kumpulkan data form
     const adults = document.getElementById("adults").value;
     const children = document.getElementById("children").value;
-    const people = `${adults} Adults, ${children} Children`;
+    const people = ${adults} Adults, ${children} Children;
 
     const title = document.getElementById("title").value;
     const firstName = document.getElementById("firstName").value;
     const lastName = document.getElementById("lastName").value;
-    const name = `${title} ${firstName} ${lastName}`.trim();
+    const name = ${title} ${firstName} ${lastName}.trim();
 
     const data = {
       name: name,

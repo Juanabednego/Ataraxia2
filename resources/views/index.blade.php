@@ -11,6 +11,7 @@
 
   <!-- Vendor CSS Files -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
 
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
@@ -351,40 +352,71 @@
         </div>
 
         <!-- Reviews List -->
-        <div class="row justify-content-center">
-          <div class="col-lg-8" data-aos="fade-up">
-            <h2 class="mb-4 text-center">Reviews Pengguna</h2>
-            
-            @forelse($reviews as $review)
-              <div class="review-item mb-4 p-4 bg-white rounded shadow-sm">
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                  <div>
-                    <h5 class="mb-1 fw-bold">{{ $review->user->name ?? 'Anonymous' }}</h5>
-                    <small class="text-muted d-block">
-                      {{ $review->created_at->format('M d, Y H:i') }}
-                    </small>
-                  </div>
-                  
-                  <div class="rating">
-                    @for($i = 1; $i <= 5; $i++)
-                      @if($i <= $review->rating)
-                        <i class="fas fa-star text-warning"></i>
-                      @else
-                        <i class="far fa-star text-warning"></i>
-                      @endif
-                    @endfor
-                  </div>
-                </div>
-                
-                <p class="mb-0 mt-2">{{ $review->comment }}</p>
-              </div>
-            @empty
-              <div class="alert alert-info text-center">
-                No reviews yet. Be the first to review!
-              </div>
-            @endforelse
+<div class="row justify-content-center">
+  <div class="col-lg-8" data-aos="fade-up">
+    <h2 class="mb-4 text-center">Reviews Pengguna</h2>
+
+    @php
+      $visibleCount = 4;
+    @endphp
+
+    @forelse($reviews as $index => $review)
+      <div class="review-item mb-4 p-4 bg-white rounded shadow-sm review-block {{ $index >= $visibleCount ? 'd-none extra-review' : '' }}">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <div>
+            <h5 class="mb-1 fw-bold">{{ $review->user->name ?? 'Anonymous' }}</h5>
+            <small class="text-muted d-block">
+              {{ $review->created_at->format('M d, Y H:i') }}
+            </small>
+          </div>
+
+          <div class="rating">
+            @for($i = 1; $i <= 5; $i++)
+              @if($i <= $review->rating)
+                <i class="fas fa-star text-warning"></i>
+              @else
+                <i class="far fa-star text-warning"></i>
+              @endif
+            @endfor
           </div>
         </div>
+
+        <p class="mb-0 mt-2">{{ $review->comment }}</p>
+      </div>
+    @empty
+      <div class="alert alert-info text-center">
+        No reviews yet. Be the first to review!
+      </div>
+    @endforelse
+
+    @if(count($reviews) > $visibleCount)
+      <div class="text-center mt-3">
+        <button id="toggleReviewsBtn" class="btn btn-outline-primary btn-sm">
+          Lihat Semua
+        </button>
+      </div>
+    @endif
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const toggleBtn = document.getElementById('toggleReviewsBtn');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', function () {
+        const hiddenReviews = document.querySelectorAll('.extra-review');
+        const isHidden = hiddenReviews[0]?.classList.contains('d-none');
+
+        hiddenReviews.forEach(review => {
+          review.classList.toggle('d-none');
+        });
+
+        toggleBtn.textContent = isHidden ? 'Tutup Semua' : 'Lihat Semua';
+      });
+    }
+  });
+</script>
+
       </div>
     </section>
 

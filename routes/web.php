@@ -135,7 +135,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/pilihkursi', [PilihKursiController::class, 'index'])->name('pilihkursi');
 
 
-Auth::routes();
+Auth::routes(); 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

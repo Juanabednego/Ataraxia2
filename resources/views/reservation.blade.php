@@ -79,11 +79,11 @@
     <div class="step-indicator">
       <div class="step" id="step-label-1">
         <div class="step-number">1</div>
-        <div>Reservation</div>
+        <div>Reservasi</div>
       </div>
       <div class="step inactive" id="step-label-2">
         <div class="step-number">2</div>
-        <div>Information</div>
+        <div>Detail</div>
       </div>
     </div>
 
@@ -91,40 +91,40 @@
     <div id="step1">
       <form id="step1Form" onsubmit="event.preventDefault(); if(validateStep1()) showStep(2);">
         <div class="mb-3">
-          <label class="form-label">Adults</label>
+          <label class="form-label">Dewasa</label>
           <input type="number" name="adults" class="form-control" id="adults" min="0" max="75" value="0" required placeholder="Masukkan jumlah dewasa" onfocus="clearZero(this)" />
         </div>
         <div class="mb-3">
-          <label class="form-label">Children</label>
+          <label class="form-label">Anak-Anak</label>
           <input type="number" name="children" class="form-control" id="children" min="0" max="75" value="0" required placeholder="Masukkan jumlah anak-anak" onfocus="clearZero(this)" />
         </div>
         <div class="mb-3">
-          <label class="form-label">Date</label>
+          <label class="form-label">Tanggal</label>
           <input type="date" name="date" class="form-control" id="date" required min="{{ date('Y-m-d') }}" />
         </div>
         <div class="mb-3">
-          <label class="form-label">Time</label>
+          <label class="form-label">Jam</label>
           <input type="time" name="time" class="form-control" id="time" required />
         </div>
 
         <div class="house-rules mb-3">
-          <strong>House Rules:</strong>
+          <strong>Peraturan :</strong>
           <ul>
-            <li>Restaurant dining time is limited to 2 hours</li>
-            <li><strong>Please state your preferred dining area (smoking/non-smoking)</strong> in the special request box. This request is not guaranteed and subject to availability.</li>
+            <li>Waktu makan di restoran dibatasi hingga 2 jam</li>
+            <li><strong>Harap sebutkan area makan pilihan Anda (merokok/tidak merokok)</strong> dalam kotak permintaan khusus. Permintaan ini tidak dijamin dan tergantung pada ketersediaan.</li>
             <li>Reservation will be held for 15 minutes past booking time</li>
-            <li>For groups above 10 people, please contact us directly on WhatsApp</li>
+            <li>Untuk rombongan di atas 10 orang, silakan hubungi kami langsung di WhatsApp</li>
           </ul>
         </div>
 
         <div class="form-check mb-3">
           <input class="form-check-input" type="checkbox" id="agree" required />
-          <label class="form-check-label">I have read and agree to the above terms and conditions.</label>
+          <label class="form-check-label">Saya telah membaca dan menyetujui syarat dan ketentuan di atas.</label>
         </div>
 
         <div class="d-flex justify-content-between">
-          <a href="/" class="btn btn-secondary">Back</a>
-          <button type="submit" class="btn btn-primary">Next</button>
+          <a href="/" class="btn btn-secondary">Kembali</a>
+          <button type="submit" class="btn btn-primary">Selanjutnya</button>
         </div>
       </form>
     </div>
@@ -132,7 +132,6 @@
     <!-- Step 2 -->
     <div id="step2" style="display: none">
       <form id="step2Form" onsubmit="event.preventDefault(); showConfirmationModal();">
-        <h5 class="mb-4">We have a table for you at <strong>Ataraxia</strong></h5>
 
         <div class="row mb-3">
           <div class="col-md-2">
@@ -144,15 +143,15 @@
             </select>
           </div>
           <div class="col-md-5">
-            <input type="text" name="firstName" class="form-control" placeholder="First Name" id="firstName" required />
+            <input type="text" name="firstName" class="form-control" placeholder="Nama Depan" id="firstName" required />
           </div>
           <div class="col-md-5">
-            <input type="text" name="lastName" class="form-control" placeholder="Last Name" id="lastName" />
+            <input type="text" name="lastName" class="form-control" placeholder="Nama Belakang" id="lastName" />
           </div>
         </div>
 
         <div class="mb-3">
-          <input type="email" name="email" class="form-control" placeholder="Email Address" id="email" required />
+          <input type="email" name="email" class="form-control" placeholder="Alamat Email" id="email" required />
         </div>
 
         <div class="mb-3 row">
@@ -160,24 +159,24 @@
             <input type="text" class="form-control" value="+62" disabled />
           </div>
           <div class="col-md-9">
-            <input type="tel" name="phone" class="form-control" placeholder="Phone Number" id="phone" required />
+            <input type="tel" name="phone" class="form-control" placeholder="Nomor Telepon" id="phone" required />
           </div>
         </div>
 
         <div class="mb-3">
-          <textarea name="note" class="form-control" maxlength="85" placeholder="Message (Maximum 85 characters.)" id="note"></textarea>
+          <textarea name="note" class="form-control" maxlength="85" placeholder="Pesan (Maksimal 85 Karakter)" id="note"></textarea>
         </div>
 
         <div class="form-check mb-4">
           <input class="form-check-input" type="checkbox" id="promotions" />
           <label class="form-check-label">
-            I’d love to receive personalised dining recommendations and deals!
+            Saya ingin sekali menerima rekomendasi dan penawaran tempat makan yang dipersonalisasi!
           </label>
         </div>
 
         <div class="d-flex justify-content-between">
-          <button type="button" class="btn btn-secondary" onclick="showStep(1)">Back</button>
-          <button type="submit" class="btn btn-primary">Confirm Booking</button>
+          <button type="button" class="btn btn-secondary" onclick="showStep(1)">Kembali</button>
+          <button type="submit" class="btn btn-primary">Konfirmasi Booking</button>
         </div>
       </form>
     </div>

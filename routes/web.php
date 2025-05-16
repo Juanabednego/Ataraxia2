@@ -149,7 +149,7 @@ Route::get('/notifikasi-user', [BookingController::class, 'getNotifikasiUser'])
     Route::get('/notifikasi-reservation', [AdminReservationController::class, 'getNotifikasiReservation'])->name('notif.reservation');
 
 
-
+ 
     Route::get('/kelola-menu', [MakananController::class, 'index'])->name('kelola-menu.index');
     Route::post('/kelola-menu', [MakananController::class, 'store'])->name('kelola-menu.store');
     Route::put('/kelola-menu/{id}', [MakananController::class, 'update'])->name('kelola-menu.update');

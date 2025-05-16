@@ -271,14 +271,50 @@ h6 {
 }
 
 /* Mobile Navigation */
+/* Mobile Navigation Fix */
 @media (max-width: 1199px) {
+  /* Perbaikan untuk dropdown user dan notifikasi */
+  .nav-item.dropdown, 
+  .dropdown.d-inline {
+    position: static !important;
+    display: block !important;
+  }
+  
+  .dropdown-menu {
+    position: absolute !important;
+    right: 15px !important;
+    left: auto !important;
+    width: 280px !important;
+  }
+  
+  /* Atur ulang z-index */
+  .header {
+    z-index: 1000;
+    position: relative;
+  }
+  
+  /* Pastikan toggle menu terlihat */
   .mobile-nav-toggle {
-    color: var(--nav-color);
-    font-size: 28px;
-    line-height: 0;
-    margin-right: 10px;
-    cursor: pointer;
-    transition: color 0.3s;
+    z-index: 1001;
+    position: relative;
+  }
+  
+  /* Perbaikan layout navmenu */
+  .navmenu {
+    order: 2;
+    width: 100%;
+  }
+  
+  .navmenu > ul {
+    flex-direction: column;
+    background: white;
+    padding: 20px 0;
+    margin-top: 15px;
+  }
+  
+  /* Atur container header */
+  .header > .container {
+    flex-wrap: wrap;
   }
 
   .navmenu {

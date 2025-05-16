@@ -84,101 +84,115 @@
 .logo {
   text-decoration: none !important;
 }
+.logo-img {
+  height: 40px; /* Atur tinggi logo supaya tidak terlalu besar */
+  width: auto;
+}
+.sitename {
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+.navbar-nav .nav-link {
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+}
 
+@media (max-width: 767.98px) {
+  .navbar-nav .nav-link {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.9rem;
+  }
+}
 </style>
 </head>
 
 <body class="index-page" >
-<header id="header" class="header d-flex align-items-center sticky-top py-3">
+<header id="header" class="header sticky-top py-3 bg-white shadow-sm">
   <div class="container d-flex align-items-center justify-content-between">
-    <a href="index.html" class="logo d-flex align-items-center me-auto">
-      <img src="assets/img/logoo.png" alt="Ataraxia Logo" class="logo-img">
-      <h1 class="sitename">Ataraxia</h1>
-    </a>
 
-    <nav id="navmenu" class="navmenu ms-auto nav-bold">
-      <ul class="d-flex align-items-center mb-0">
-        <li><a href="{{ route('index') }}" class="active">Home</a></li>
-        <li><a href="#events">Events</a></li>
-        <li><a href="/menu">Menu</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="/reservation">Reservation</a></li>
-      </ul>
-      <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+    <!-- Logo -->
+    <a href="{{ route('index') }}" class="logo d-flex align-items-center me-auto">
+    <img src="{{ asset('assets/img/logoo.png') }}" alt="Ataraxia Logo" class="logo-img" />
+    <h1 class="sitename ms-2 mb-0">Ataraxia</h1>
+</a>
+
+    <!-- Navbar menu + toggle -->
+    <nav class="navbar navbar-expand-xl ms-3">
+      <div class="container-fluid p-0">
+        <!-- Toggle Button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
+          aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Menu Items -->
+        <div class="collapse navbar-collapse" id="navbarMenu">
+          <ul class="navbar-nav ms-auto mb-2 mb-xl-0">
+            <li class="nav-item"><a class="nav-link active" href="{{ route('index') }}">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="#events">Events</a></li>
+            <li class="nav-item"><a class="nav-link" href="/menu">Menu</a></li>
+            <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="/reservation">Reservation</a></li>
+          </ul>
+        </div>
+      </div>
     </nav>
 
-    {{-- Notifikasi untuk user login --}}
-    @auth
-    <div class="nav-item dropdown position-relative ms-3">
-      <a class="nav-link dropdown-toggle d-flex align-items-center position-relative"
-         href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="bi bi-bell-fill fs-4 text-dark"></i>
-        <span id="notificationBadge"
-              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow-sm"
-              style="display: none;">
-          1
-        </span>
-      </a>
+    <!-- Icon Notifikasi dan User di sebelah kanan -->
+    <div class="d-flex align-items-center ms-3 gap-3">
+      @auth
+      <!-- Notifikasi -->
+      <div class="nav-item dropdown position-relative">
+        <a class="nav-link dropdown-toggle d-flex align-items-center position-relative"
+           href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-bell-fill fs-4 text-dark"></i>
+          <span id="notificationBadge"
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow-sm"
+                style="display: none;">
+            1
+          </span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown"
+            style="min-width: 320px; max-width: 360px;">
+          <li class="dropdown-header fw-bold text-dark px-3 pt-2">🔔 Notifikasi Terbaru</li>
+          <li>
+            <a class="dropdown-item py-2 px-3 d-flex align-items-start gap-3 hover-highlight" href="#">
+              <i class="bi bi-info-circle-fill text-muted fs-5 mt-1"></i>
+              <div class="flex-grow-1">
+                <div class="fw-semibold text-muted text-truncate-2-lines">Belum ada notifikasi</div>
+                <small class="text-muted">Kamu akan melihatnya di sini</small>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
 
-      <ul class="dropdown-menu dropdown-menu-end animate_animated animate_fadeIn"
-          aria-labelledby="notificationDropdown"
-          id="notificationDropdownList"
-          style="min-width: 340px; max-width: 380px;">
-        <li class="dropdown-header fw-bold text-dark px-3 pt-2">🔔 Notifikasi Terbaru</li>
-        <li>
-          <a class="dropdown-item py-2 px-3 d-flex align-items-start gap-3 hover-highlight" href="#">
-            <i class="bi bi-info-circle-fill text-muted fs-5 mt-1"></i>
-            <div class="flex-grow-1">
-              <div class="fw-semibold text-muted text-truncate-2-lines">Belum ada notifikasi</div>
-              <small class="text-muted">Kamu akan melihatnya di sini</small>
-            </div>
-          </a>
-        </li>
-      </ul>
-    </div>
-    @endauth
+      <!-- User Dropdown -->
+      <div class="dropdown">
+        <button class="btn p-0 border-0 bg-transparent d-flex align-items-center" type="button"
+                id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fas fa-user fs-5 text-dark"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end shadow rounded-3 border-0 mt-2" aria-labelledby="userDropdown">
+          <li><button class="dropdown-item py-2" data-bs-toggle="modal" data-bs-target="#accountModal">Akun Saya</button></li>
+          <li><a class="dropdown-item py-2" href="/histori">Histori</a></li>
+          <li>
+            <form action="{{ route('logout') }}" method="POST" class="m-0">
+              @csrf
+              <button type="submit" class="dropdown-item py-2 text-danger">Logout</button>
+            </form>
+          </li>
+        </ul>
+      </div>
+      @endauth
 
-    @auth
-    <div class="dropdown d-inline ms-3">
-      <button class="btn p-0 border-0 bg-transparent d-flex align-items-center"
-              type="button" id="userDropdown"
-              data-bs-toggle="dropdown"
-              aria-expanded="false">
-        <i class="fas fa-user fs-5 text-dark"></i>
-      </button>
-
-      <ul class="dropdown-menu dropdown-menu-end shadow rounded-3 border-0 mt-2" aria-labelledby="userDropdown">
-        <li>
-          <button class="dropdown-item py-2" data-bs-toggle="modal" data-bs-target="#accountModal">
-            Akun Saya
-          </button>
-        </li>
-        <li>
-          <a class="dropdown-item py-2" href="/histori">
-            Histori
-          </a>
-        </li>
-        <li>
-          <form action="{{ route('logout') }}" method="POST" class="m-0">
-            @csrf
-            <button type="submit" class="dropdown-item py-2 text-danger">
-              Logout
-            </button>
-          </form>
-        </li>
-      </ul>
-    </div>
-    @endauth
-
-    @guest
-    <div class="d-inline ms-3">
-      <a href="/login"
-         class="btn p-0 border-0 bg-transparent d-flex align-items-center"
-         style="line-height: 1;">
+      @guest
+      <a href="/login" class="btn p-0 border-0 bg-transparent d-flex align-items-center" style="line-height: 1;">
         <i class="fas fa-user fs-5 text-dark"></i>
       </a>
+      @endguest
     </div>
-    @endguest
-
   </div>
 </header>
+<script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

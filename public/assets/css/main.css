@@ -662,6 +662,7 @@ p {
 .sitename {
   font-family: "Dash Horizon", sans-serif;
   font-size: 20px;
+  text-shadow: 2px 2px 4px rgba(129, 116, 160, 0.7);
 
 }
 

@@ -5,7 +5,6 @@
   <meta charset="utf-8">
   <meta content="#" name="#">
   <title>Ataraxia Cafe</title>
-  @include('layouts.Navbar')
   <meta name="description" content="">
   <meta name="keywords" content="">
 
@@ -172,7 +171,7 @@
 </head>
 
 <body class="index-page">
-
+  @include('layouts.Navbar')
   <main class="main">
     <!-- Hero Section -->
     <section id="hero" class="hero section light-background">

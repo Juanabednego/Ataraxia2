@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Models\Booking;
 use App\Models\User;
 use App\Models\Event;
+use App\Models\AdminNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -88,6 +89,14 @@ class BookingController extends Controller
             'status' => 'pending' // Status booking masih pending sampai pembayaran terkonfirmasi
         ]);
 
+            AdminNotification::create([
+    'type' => 'booking',
+    'reference_id' => $booking->id,
+    'title' => 'Pemesanan Tiket Baru',
+    'message' => 'User ' . Auth::user()->name . ' memesan tiket untuk event ID ' . $request->event_id,
+]);
+    
+
         DB::commit(); // Commit transaksi
 
         Log::info('Booking berhasil dibuat', ['booking_id' => $booking->id, 'seats' => $selectedSeats]);
@@ -99,6 +108,7 @@ class BookingController extends Controller
         Log::error('Gagal menyimpan booking', ['error' => $e->getMessage()]);
         return response()->json(['error' => 'Terjadi kesalahan, silakan coba lagi.'], 500);
     }
+
 }
 
 

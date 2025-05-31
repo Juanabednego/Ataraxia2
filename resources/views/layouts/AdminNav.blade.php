@@ -43,13 +43,49 @@
         <ul class="d-flex align-items-center">
   
           <li class="nav-item dropdown">
-  
-            <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-              <i class="bi bi-bell"></i>
-              <span class="badge bg-primary badge-number">4</span>
-            </a><!-- End Notification Icon -->
-          </li><!-- End Notification Nav -->
-  
+  @php
+use App\Models\AdminNotification;
+$notifCount = \App\Models\AdminNotification::where('is_read', false)->count();
+$latestNotifs = \App\Models\AdminNotification::latest()->take(5)->get();
+@endphp
+
+<li class="nav-item dropdown">
+
+  <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+    <i class="bi bi-bell"></i>
+    @if($notifCount > 0)
+      <span class="badge bg-danger badge-number">{{ $notifCount }}</span>
+    @endif
+  </a><!-- End Notification Icon -->
+
+  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+    <li class="dropdown-header">
+      Kamu punya {{ $notifCount }} notifikasi baru
+      <a href="{{ route('admin.notifications.index') }}">
+        <span class="badge rounded-pill bg-primary p-1 ms-2">Lihat Semua</span>
+      </a>
+    </li>
+    <li><hr class="dropdown-divider"></li>
+
+    @forelse($latestNotifs as $notif)
+      <li class="notification-item">
+        <i class="bi bi-info-circle text-primary"></i>
+        <div>
+          <h6 class="mb-1">{{ $notif->title }}</h6>
+          <p class="mb-1">{{ \Illuminate\Support\Str::limit($notif->message, 60) }}</p>
+          <small class="text-muted">{{ $notif->created_at->diffForHumans() }}</small>
+        </div>
+      </li>
+      <li><hr class="dropdown-divider"></li>
+    @empty
+      <li class="notification-item text-center text-muted">
+        Tidak ada notifikasi baru
+      </li>
+    @endforelse
+  </ul><!-- End Notification Dropdown -->
+
+</li><!-- End Notification Nav -->
+
         
   
           <li class="nav-item dropdown pe-3">

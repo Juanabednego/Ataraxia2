@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\AdminNotification;
 
 class ReservationController extends Controller
 {
@@ -33,5 +34,14 @@ class ReservationController extends Controller
         ]);
 
         return redirect()->route('reservation.form')->with('success', 'Reservation submitted and awaiting admin confirmation.');
+
+            AdminNotification::create([
+    'type' => 'reservation',
+    'reference_id' => $reservation->id,
+    'title' => 'Reservasi Baru',
+    'message' => 'Reservasi oleh ' . Auth::user()->name . ' untuk ' . $reservation->date,
+]);
     }
+
+
 }

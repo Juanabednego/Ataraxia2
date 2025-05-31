@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Review;
+use App\Models\AdminNotification;
 
 class ReviewUserController extends Controller
 {
@@ -32,6 +33,14 @@ class ReviewUserController extends Controller
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Terjadi kesalahan saat mengirimkan review.']);
         }
+
+            AdminNotification::create([
+    'type' => 'review',
+    'reference_id' => $review->id,
+    'title' => 'Review Baru',
+    'message' => 'Review dari ' . auth()->user()->name . ': ' . \Str::limit($review->comment, 50),
+]);
     }
+
 
 }

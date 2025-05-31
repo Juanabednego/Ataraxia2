@@ -27,6 +27,21 @@ use App\Http\Controllers\AboutSectionAdminController;
 use App\Http\Controllers\SeatLayoutController;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\AdminNotificationController;
+
+Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
+    Route::get('/notifications', [AdminNotificationController::class, 'index'])->name('admin.notifications.index');
+
+    Route::get('/notifications/{type}/{id}', function($type, $id) {
+        return match($type) {
+            'reservation' => redirect()->route('admin.reservation.show', $id),
+            'booking'     => redirect()->route('admin.booking.show', $id),
+            'review'      => redirect()->route('admin.review.show', $id),
+            default       => abort(404),
+        };
+    })->name('admin.notifications.show');
+});
+
 
 Route::get('login/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('login/google/callback', [LoginController::class, 'handleGoogleCallback']);

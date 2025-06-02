@@ -172,7 +172,7 @@
 </head>
 
 <body class="index-page">
-  @include('layouts.Navbar')
+     @include('layouts.Navbar')
   <main class="main">
     <!-- Hero Section -->
     <section id="hero" class="hero section light-background">

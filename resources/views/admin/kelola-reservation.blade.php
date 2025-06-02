@@ -83,12 +83,7 @@
                     </td>
                     <td>
                         @if($res->status === 'pending')
-                        <form action="{{ route('admin.update', $res->id) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('PATCH')
-                            <button name="status" value="confirmed" class="btn btn-outline-success btn-sm">Confirm</button>
-                        </form>
-
+                        <button class="btn btn-outline-success btn-sm" onclick="openConfirmModal({{ $res->id }})">Confirm</button>
                         <button class="btn btn-outline-danger btn-sm" onclick="openCancelModal({{ $res->id }})">Cancel</button>
                         @else
                         <span class="text-muted small fst-italic">Status Final</span>
@@ -128,6 +123,29 @@
   </div>
 </div>
 
+<!-- Modal Konfirmasi -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form id="confirmForm" method="POST">
+      @csrf
+      @method('PATCH')
+      <input type="hidden" name="status" value="confirmed">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmModalLabel">Konfirmasi Reservasi</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body">
+          <p>Pastikan pesanan nya sesuai sebelum Anda mengonfirmasi reservasi ini.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Konfirmasi</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
 <footer id="footer" class="footer mt-auto py-3 bg-light">
     <div class="container">
         <div class="text-center text-muted">
@@ -143,6 +161,13 @@
         form.action = `/admin/reservation/${reservationId}`;
         document.getElementById('reason').value = '';
         const modal = new bootstrap.Modal(document.getElementById('cancelReasonModal'));
+        modal.show();
+    }
+
+    function openConfirmModal(reservationId) {
+        const form = document.getElementById('confirmForm');
+        form.action = `/admin/reservation/${reservationId}`;
+        const modal = new bootstrap.Modal(document.getElementById('confirmModal'));
         modal.show();
     }
 </script>

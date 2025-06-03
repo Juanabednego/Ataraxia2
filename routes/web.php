@@ -28,6 +28,24 @@ use App\Http\Controllers\SeatLayoutController;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AdminNotificationController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+
+Route::middleware('guest')->group(function () {
+    // Tampilkan form request reset password
+    Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+
+    // Proses kirim email reset password
+    Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+    // Tampilkan form reset password dengan token
+    Route::get('reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+
+    // Proses reset password
+    Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('password.store');
+});
+
+
 
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/notifications', [AdminNotificationController::class, 'index'])->name('admin.notifications.index');

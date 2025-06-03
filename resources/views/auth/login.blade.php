@@ -71,7 +71,7 @@
                            class="form-control rounded-pill ps-4 pe-5 @error('password') is-invalid @enderror"
                            name="password" required
                            placeholder="Password" autocomplete="current-password">
-                    <span class="position-absolute top-50 end-0 translate-middle-y me-3 text-muted" style="cursor: pointer;">
+                    <span id="togglePassword" class="position-absolute top-50 end-0 translate-middle-y me-3 text-muted" style="cursor: pointer;">
                         <i class="fas fa-eye-slash"></i>
                     </span>
                     @error('password')
@@ -117,4 +117,25 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const togglePassword = document.querySelector('#togglePassword');
+        const passwordInput = document.querySelector('#password');
+        const icon = togglePassword.querySelector('i');
+
+        togglePassword.addEventListener('click', function () {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            if (type === 'password') {
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+    });
+</script>
 @endsection

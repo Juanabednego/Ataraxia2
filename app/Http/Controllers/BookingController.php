@@ -18,7 +18,7 @@ class BookingController extends Controller
 
     // Ambil semua kursi yang sudah dibooking
     $bookedSeats = Booking::where('event_id', $eventId)
-        ->whereIn('status', ['confirmed', 'waiting_payment_confirmation'])
+        ->whereIn('status', ['confirmed'])
         ->pluck('seats')
         ->toArray();
 
@@ -63,13 +63,15 @@ class BookingController extends Controller
         DB::beginTransaction();
 
         // Cek apakah ada kursi yang sudah dibooking
-        $existingBookings = Booking::where('status', '!=', 'cancelled')
-            ->where(function ($query) use ($selectedSeats) {
-                foreach ($selectedSeats as $seat) {
-                    $query->orWhereJsonContains('seats', $seat);
-                }
-            })
-            ->exists();
+      $existingBookings = Booking::where('event_id', $request->event_id)
+    ->where('status', 'confirmed')
+    ->where(function ($query) use ($selectedSeats) {
+        foreach ($selectedSeats as $seat) {
+            $query->orWhereJsonContains('seats', $seat);
+        }
+    })
+    ->exists();
+
 
         if ($existingBookings) {
             return response()->json(['error' => 'Beberapa kursi yang dipilih sudah dibooking.'], 400);

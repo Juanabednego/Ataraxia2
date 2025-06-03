@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->string('phone');
             $table->date('date');
             $table->time('time');
-            $table->string('people');
+          $table->integer('people');
             $table->text('note')->nullable();
             $table->enum('status', ['pending', 'confirmed', 'cancelled'])->default('pending');
             $table->timestamps();

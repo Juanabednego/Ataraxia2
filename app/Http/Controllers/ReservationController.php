@@ -17,32 +17,29 @@ class ReservationController extends Controller
         $request->validate([
             'date' => 'required|date',
             'time' => 'required',
-            'people' => 'required|string',
+            'people' => 'required|integer|min:1',
             'note' => 'nullable|string'
         ]);
 
-        Reservation::create([
+        $reservation = Reservation::create([
             'user_id' => Auth::id(),
             'name' => Auth::user()->name,
             'email' => Auth::user()->email,
             'phone' => Auth::user()->phone ?? '-',
             'date' => $request->date,
             'time' => $request->time,
-            'people' => $request->people,
+            'people' => $request->people,  // Simpan jumlah kursi total (integer)
             'note' => $request->note,
             'status' => 'pending',
         ]);
 
-           AdminNotification::create([
-    'type' => 'reservation',
-    'reference_id' => $reservation->id,
-    'title' => 'Reservasi Baru',
-    'message' => 'Reservasi oleh ' . Auth::user()->name . ' untuk ' . $reservation->date,
-]);
+        AdminNotification::create([
+            'type' => 'reservation',
+            'reference_id' => $reservation->id,
+            'title' => 'Reservasi Baru',
+            'message' => 'Reservasi oleh ' . Auth::user()->name . ' untuk ' . $reservation->date,
+        ]);
 
         return redirect()->route('reservation.form')->with('success', 'Reservation submitted and awaiting admin confirmation.');
-
     }
-
-
 }

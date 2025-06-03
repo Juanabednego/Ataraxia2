@@ -58,6 +58,10 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
             default       => abort(404),
         };
     })->name('admin.notifications.show');
+
+    // Route baru untuk tandai semua notifikasi sudah dibaca via POST (AJAX)
+    Route::post('/notifications/mark-read', [AdminNotificationController::class, 'markAllAsRead'])
+        ->name('admin.notifications.markRead');
 });
 
 

@@ -158,7 +158,7 @@
 <script>
     function openCancelModal(reservationId) {
         const form = document.getElementById('cancelForm');
-        form.action = `/admin/reservation/${reservationId}`;
+        form.action = `/admin/kelola-reservation/${reservationId}`;
         document.getElementById('reason').value = '';
         const modal = new bootstrap.Modal(document.getElementById('cancelReasonModal'));
         modal.show();
@@ -166,7 +166,7 @@
 
     function openConfirmModal(reservationId) {
         const form = document.getElementById('confirmForm');
-        form.action = `/admin/reservation/${reservationId}`;
+        form.action = `/admin/kelola-reservation/${reservationId}`;
         const modal = new bootstrap.Modal(document.getElementById('confirmModal'));
         modal.show();
     }

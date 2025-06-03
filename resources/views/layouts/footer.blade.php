@@ -35,7 +35,7 @@
         <div class="col-lg-3 col-md-6">
           <h4>Follow Us</h4>
           <div class="social-links d-flex">
-            <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+           <a href="#" class="tiktok"><i class="fab fa-tiktok"></i></a>
             <a href="https://www.facebook.com/people/Ataraxia-Balige/61572251962842/" class="facebook"><i class="bi bi-facebook"></i></a>
             <a href="https://www.instagram.com/ataraxia.balige" class="instagram"><i class="bi bi-instagram"></i></a>
           </div>

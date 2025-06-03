@@ -22,4 +22,18 @@ class AdminNotificationController extends Controller
 
         return redirect()->route('admin.notifications.index');
     }
+
+    // Tambahkan method untuk tandai semua sudah dibaca (mark all as read)
+    public function markAllAsRead(Request $request)
+    {
+        AdminNotification::where('is_read', false)->update(['is_read' => true]);
+
+        // Jika AJAX request, balikan json
+        if ($request->ajax()) {
+            return response()->json(['message' => 'Semua notifikasi telah ditandai sudah dibaca']);
+        }
+
+        // Jika bukan AJAX, redirect kembali
+        return redirect()->route('admin.notifications.index')->with('success', 'Semua notifikasi telah ditandai sudah dibaca');
+    }
 }

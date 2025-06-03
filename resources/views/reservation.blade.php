@@ -3,11 +3,17 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Reservasi Restoran</title>
+
+  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
-  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <!-- CSRF Token -->
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
 
   <style>
     body {
@@ -76,7 +82,8 @@
 <body>
   @include('layouts.Navbar')
 
-  <div class="reservation-container">
+  <main class="reservation-container">
+    <!-- Step indicator -->
     <div class="step-indicator">
       <div class="step" id="step-label-1">
         <div class="step-number">1</div>
@@ -89,35 +96,34 @@
     </div>
 
     <!-- Step 1 -->
-    <div id="step1">
+    <section id="step1">
       <form id="step1Form" onsubmit="event.preventDefault(); if(validateStep1()) showStep(2);">
         <div class="mb-3">
-          <label class="form-label">Jumlah Kursi</label>
+          <label for="totalSeats" class="form-label">Jumlah Kursi</label>
           <input type="number" name="totalSeats" class="form-control" id="totalSeats" min="1" max="75" value="1" required
             placeholder="Masukkan jumlah kursi" onfocus="clearZero(this)" />
         </div>
         <div class="mb-3">
-          <label class="form-label">Tanggal</label>
+          <label for="date" class="form-label">Tanggal</label>
           <input type="date" name="date" class="form-control" id="date" required min="{{ date('Y-m-d') }}" />
         </div>
         <div class="mb-3">
-          <label class="form-label">Jam</label>
+          <label for="time" class="form-label">Jam</label>
           <input type="time" name="time" class="form-control" id="time" required />
         </div>
 
         <div class="house-rules mb-3">
           <strong>Peraturan :</strong>
           <ul>
-            <li>Waktu makan di restoran dibatasi hingga 2 jam</li>
-            <li><strong>Sebutkan area pilihan Anda (merokok/tidak merokok)</strong></li>
-            <li>Reservation will be held for 15 minutes past booking time</li>
+            <li><strong>Reservasi akan diproses 15 menit setelah waktu pemesanan </strong></li>
+            <li>Untuk Request Posisi Kursi, Silahkan Hubungi Admin Melalui Whatsapp</li>
             <li>Untuk rombongan di atas 10 orang, silakan hubungi kami via WhatsApp</li>
           </ul>
         </div>
 
         <div class="form-check mb-3">
           <input class="form-check-input" type="checkbox" id="agree" required />
-          <label class="form-check-label">Saya telah membaca dan menyetujui syarat dan ketentuan di atas.</label>
+          <label class="form-check-label" for="agree">Saya telah membaca dan menyetujui syarat dan ketentuan di atas.</label>
         </div>
 
         <div class="d-flex justify-content-between">
@@ -125,10 +131,10 @@
           <button type="submit" class="btn btn-primary">Selanjutnya</button>
         </div>
       </form>
-    </div>
+    </section>
 
     <!-- Step 2 -->
-    <div id="step2" style="display: none">
+    <section id="step2" style="display: none;">
       <form id="step2Form" onsubmit="event.preventDefault(); showConfirmationModal();">
         <div class="row mb-3">
           <div class="col-md-2">
@@ -167,7 +173,7 @@
 
         <div class="form-check mb-4">
           <input class="form-check-input" type="checkbox" id="promotions" />
-          <label class="form-check-label">
+          <label class="form-check-label" for="promotions">
             Saya ingin sekali menerima rekomendasi dan penawaran tempat makan yang dipersonalisasi!
           </label>
         </div>
@@ -177,16 +183,19 @@
           <button type="submit" class="btn btn-primary">Konfirmasi Booking</button>
         </div>
       </form>
-    </div>
-  </div>
-
+    </section>
+  </main>
+@include('layouts.footer')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Bootstrap Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Modal Konfirmasi -->
-  <div class="modal fade" id="confirmationModal" tabindex="-1">
+  <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Konfirmasi Detail Reservasi</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          <h5 class="modal-title" id="confirmationModalLabel">Konfirmasi Detail Reservasi</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
         </div>
         <div class="modal-body">
           <p><strong>Jumlah Kursi:</strong> <span id="confirmTotalSeats"></span></p>
@@ -207,7 +216,10 @@
     </div>
   </div>
 
-  @include('layouts.footer')
+  
+
+  <!-- Bootstrap Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
     function showStep(step) {
@@ -307,7 +319,8 @@
           alert("Reservasi berhasil dikonfirmasi!");
           window.location.href = "/";
         } else {
-          alert("Gagal mengirim reservasi.");
+          const err = await response.json();
+          alert(err.message || "Gagal mengirim reservasi.");
         }
       } catch (error) {
         console.error("Error:", error);
@@ -315,9 +328,6 @@
       }
     }
   </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 
 </html>

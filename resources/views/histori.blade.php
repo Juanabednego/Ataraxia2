@@ -4,7 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Histori Pemesanan</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
+
     <style>
         body {
             background-color: #f8f9fa;
@@ -162,7 +169,7 @@
     </style>
 </head>
 <body>
-        @include('layouts.Navbar')
+        @include('layouts.Navbar') <!-- Navbar here -->
     <div class="container ticket-container">
         <h2 class="text-center mb-4">Riwayat Pemesanan</h2>
         
@@ -208,8 +215,62 @@
 
         @endif
     </div>
-       
+    <!-- Riwayat Reservasi Restoran -->
+     <div class="container ticket-container">
+<h2 class="text-center mb-4">Riwayat Reservasi Restoran</h2>
+
+@if($reservations->isEmpty())
+    <div class="no-bookings">
+        <h4>Anda belum memiliki riwayat reservasi restoran</h4>
+        <p>Silahkan melakukan reservasi terlebih dahulu</p>
+    </div>
+@else
+    @foreach($reservations as $reservation)
+        <div class="booking-item">
+            <!-- Gunakan gambar default restoran -->
+            <img class="booking-img" src="{{ asset('assets/img/logoo.png') }}" alt="Reservasi Restoran">
+
+            <div class="booking-content">
+                <div class="booking-title">Reservasi Restoran</div>
+                <div class="booking-date">{{ $reservation->created_at->format('d F Y \p\u\k\u\l H:i') }}</div>
+
+                <div class="booking-seat mt-1">
+                    Jumlah Orang: <span class="badge bg-secondary">{{ $reservation->people }}</span>
+                </div>
+                <div class="booking-seat mt-1">
+                    Tanggal Reservasi: <strong>{{ \Carbon\Carbon::parse($reservation->date)->format('d F Y') }}</strong>
+                </div>
+                <div class="booking-seat mt-1">
+                    Waktu Reservasi: <strong>{{ \Carbon\Carbon::parse($reservation->time)->format('H:i') }}</strong>
+                </div>
+                <div class="booking-seat mt-1">
+                    Nama: <strong>{{ $reservation->name }}</strong>
+                </div>
+                <div class="booking-seat mt-1">
+                    Telepon: <strong>{{ $reservation->phone }}</strong>
+                </div>
+                <div class="booking-seat mt-1">
+                    Catatan: <strong>{{ $reservation->note ?: '-' }}</strong>
+                </div>
+
+                <div class="status-badge
+                    @if($reservation->status == 'pending') status-diproses
+                    @elseif($reservation->status == 'cancelled') status-hubungi
+                    @elseif($reservation->status == 'confirmed') status-selesai
+                    @endif">
+                    {{ $reservationStatusLabels[$reservation->status] ?? ucfirst($reservation->status) }}
+                </div>
+
+                <div class="booking-actions">
+                    <a href="https://wa.me/6283114596027" target="_blank">hubungi admin</a>
+                </div>
+            </div>
+        </div>
+    @endforeach
+@endif
+</div>
+</div>
     @include('layouts.footer')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

@@ -43,10 +43,10 @@
         <ul class="d-flex align-items-center">
   
           <li class="nav-item dropdown">
-  @php
+@php
 use App\Models\AdminNotification;
-$notifCount = \App\Models\AdminNotification::where('is_read', false)->count();
-$latestNotifs = \App\Models\AdminNotification::latest()->take(5)->get();
+$notifCount = AdminNotification::where('is_read', false)->count();
+$latestNotifs = AdminNotification::latest()->take(5)->get();
 @endphp
 
 <li class="nav-item dropdown">
@@ -59,16 +59,16 @@ $latestNotifs = \App\Models\AdminNotification::latest()->take(5)->get();
   </a><!-- End Notification Icon -->
 
   <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-    <li class="dropdown-header">
-      Kamu punya {{ $notifCount }} notifikasi baru
-      <a href="{{ route('admin.notifications.index') }}">
-        <span class="badge rounded-pill bg-primary p-1 ms-2">Lihat Semua</span>
-      </a>
+    <li class="dropdown-header d-flex justify-content-between align-items-center">
+      <span>Kamu punya {{ $notifCount }} notifikasi baru</span>
+      @if($notifCount > 0)
+      <button id="mark-read-btn" class="btn btn-sm btn-outline-primary">Tandai sudah dibaca</button>
+      @endif
     </li>
     <li><hr class="dropdown-divider"></li>
 
     @forelse($latestNotifs as $notif)
-      <li class="notification-item">
+      <li class="notification-item" id="notif-{{ $notif->id }}">
         <i class="bi bi-info-circle text-primary"></i>
         <div>
           <h6 class="mb-1">{{ $notif->title }}</h6>
@@ -84,7 +84,8 @@ $latestNotifs = \App\Models\AdminNotification::latest()->take(5)->get();
     @endforelse
   </ul><!-- End Notification Dropdown -->
 
-</li><!-- End Notification Nav -->
+</li>
+<!-- End Notification Nav -->
 
         
   
@@ -134,7 +135,7 @@ $latestNotifs = \App\Models\AdminNotification::latest()->take(5)->get();
         <li class="nav-item">
           <a class="nav-link "  href="/tables-data">
             <i class="bi bi-cart"></i>
-            <span>Pemesanan</span>
+            <span>Pemesanan Tiket</span>
           </a>
         </li>
         <li class="nav-item">
@@ -153,7 +154,7 @@ $latestNotifs = \App\Models\AdminNotification::latest()->take(5)->get();
         <li class="nav-item">
           <a class="nav-link " href="/kelola-review">
             <i class="bi bi-star"></i>
-            <span>Review</span>
+            <span>Ulasan</span>
           </a>
         </li>
 
@@ -179,6 +180,38 @@ $latestNotifs = \App\Models\AdminNotification::latest()->take(5)->get();
       </ul>
   
     </aside>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function(){
+    $('#mark-read-btn').on('click', function(e){
+      e.preventDefault();
+
+      $.ajax({
+        url: "{{ route('admin.notifications.markRead') }}",
+        type: "POST",
+        data: {
+          _token: "{{ csrf_token() }}"
+        },
+        success: function(response) {
+          // Hapus badge notifikasi
+          $('.badge-number').remove();
+
+          // Kosongkan daftar notifikasi dan beri pesan kosong
+          $('.notifications').html('<li class="notification-item text-center text-muted">Tidak ada notifikasi baru</li>');
+
+          // Hapus tombol tandai sudah dibaca
+          $('#mark-read-btn').remove();
+
+          alert(response.message);
+        },
+        error: function(xhr) {
+          alert('Terjadi kesalahan, silakan coba lagi.');
+        }
+      });
+    });
+  });
+</script>
+
 </body>
 
 </html>

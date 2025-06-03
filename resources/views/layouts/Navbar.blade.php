@@ -147,15 +147,23 @@
 
           <!-- Menu Items -->
           <div class="collapse navbar-collapse" id="navbarMenu">
-            <ul class="navbar-nav ms-auto mb-2 mb-xl-0">
-              <li class="nav-item"><a class="nav-link active" href="{{ route('index') }}">Home</a></li>
-              <li class="nav-item"><a class="nav-link" href="#events">Events</a></li>
-              <li class="nav-item"><a class="nav-link" href="/menu">Menu</a></li>
-              <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-              <li class="nav-item"><a class="nav-link" href="/reservation">Reservation</a></li>
-            </ul>
+           <ul class="navbar-nav ms-auto mb-2 mb-xl-0">
+  <li class="nav-item">
+    <a class="nav-link {{ request()->routeIs('index') ? 'active' : '' }}" href="{{ route('index') }}">Home</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {{ request()->is('events*') ? 'active' : '' }}" href="#"  id="navEventsLink">Events</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {{ request()->is('menu') ? 'active' : '' }}" href="#" id="navMenuLink">Menu</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {{ request()->is('reservation') ? 'active' : '' }}" href="/reservation">Reservation</a>
+  </li>
+</ul>
+
           </div>
-        </div>
+        </div>  
       </nav>
 
       <!-- Icon Notifikasi dan User di sebelah kanan -->
@@ -216,6 +224,57 @@
     </div>  
   </header>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const navEventsLink = document.getElementById('navEventsLink');
+
+    navEventsLink.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      // Cek halaman saat ini
+      const currentPath = window.location.pathname;
+
+      if (currentPath === '/menu', '/reservation', '/histori') {
+        // Jika di halaman menu, arahkan ke homepage dan scroll ke #events setelah load
+        window.location.href = '/#events';
+
+        // Jika ingin scroll halus setelah load (harus ada di halaman home script yg handle ini)
+      } else {
+        // Jika bukan di halaman menu, langsung scroll ke #events (misal di homepage)
+        const eventSection = document.getElementById('events');
+        if (eventSection) {
+          eventSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    });
+  });
+</script>
+ <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const navEventsLink = document.getElementById('navMenuLink');
+
+    navEventsLink.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      // Cek halaman saat ini
+      const currentPath = window.location.pathname;
+
+      if (currentPath === '/events', '/reservation', '/histori') {
+        // Jika di halaman menu, arahkan ke homepage dan scroll ke #events setelah load
+        window.location.href = '/menu';
+
+        // Jika ingin scroll halus setelah load (harus ada di halaman home script yg handle ini)
+      } else {
+        // Jika bukan di halaman menu, langsung scroll ke #events (misal di homepage)
+        const eventSection = document.getElementById('events');
+        if (eventSection) {
+          eventSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    });
+  });
+</script>
+
 </body>
 
 </html>

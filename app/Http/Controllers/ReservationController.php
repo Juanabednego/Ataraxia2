@@ -33,14 +33,15 @@ class ReservationController extends Controller
             'status' => 'pending',
         ]);
 
-        return redirect()->route('reservation.form')->with('success', 'Reservation submitted and awaiting admin confirmation.');
-
-            AdminNotification::create([
+           AdminNotification::create([
     'type' => 'reservation',
     'reference_id' => $reservation->id,
     'title' => 'Reservasi Baru',
     'message' => 'Reservasi oleh ' . Auth::user()->name . ' untuk ' . $reservation->date,
 ]);
+
+        return redirect()->route('reservation.form')->with('success', 'Reservation submitted and awaiting admin confirmation.');
+
     }
 
 

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    @include('layouts.Navbar')
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Histori Pemesanan</title>
@@ -163,6 +162,7 @@
     </style>
 </head>
 <body>
+        @include('layouts.Navbar')
     <div class="container ticket-container">
         <h2 class="text-center mb-4">Riwayat Pemesanan</h2>
         

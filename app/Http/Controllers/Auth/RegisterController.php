@@ -87,6 +87,6 @@ class RegisterController extends Controller
         auth()->logout();
 
         // Redirect to login page with success message
-        return redirect('/login')->with('success', 'Registrasi berhasil. Silakan login.');
+        return redirect()->route('login')->with('registered', true);
     }
 }

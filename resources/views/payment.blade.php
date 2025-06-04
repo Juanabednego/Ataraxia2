@@ -37,8 +37,8 @@
             font-weight: bold;
         }
         .modal-content {
-            background-color: #F44336; /* Modal background */
-            color: #ffffff; /* Text color in modal */
+            background-color:rgb(255, 255, 255); /* Modal background */
+            color:rgb(21, 21, 21); /* Text color in modal */
         }
         .form-select, .form-control {
             background-color: rgb(248, 250, 248);
@@ -68,7 +68,7 @@
             color: #B5338A; /* Purple icon */
         }
         .payment-details .copy-btn:hover i {
-            color: #F44336; /* Darker color when hovering */
+            color:rgb(255, 255, 255); /* Darker color when hovering */
         }
     </style>
 </head>

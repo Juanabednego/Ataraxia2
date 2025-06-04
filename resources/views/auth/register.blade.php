@@ -81,11 +81,7 @@
                     @error('gender')<div><span class="text-danger small">{{ $message }}</span></div>@enderror
                 </div>
 
-                <div class="mb-3">
-                    <input type="text" name="username" class="form-control rounded-pill @error('username') is-invalid @enderror" placeholder="Username" value="{{ old('username') }}" required>
-                    @error('username')<span class="text-danger small">{{ $message }}</span>@enderror
-                </div>
-
+            
                 <div class="mb-3">
                     <input type="password" name="password" class="form-control rounded-pill @error('password') is-invalid @enderror" placeholder="Password" autocomplete="new-password" required>
                     @error('password')<span class="text-danger small">{{ $message }}</span>@enderror

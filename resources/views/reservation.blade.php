@@ -317,7 +317,7 @@
 
         if (response.ok) {
           alert("Reservasi berhasil dikonfirmasi!");
-          window.location.href = "/";
+          window.location.href = "/histori";
         } else {
           const err = await response.json();
           alert(err.message || "Gagal mengirim reservasi.");

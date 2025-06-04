@@ -13,17 +13,18 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
-        .google-btn {
-            border: 2px solid #DB4437;
-            color: #DB4437;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-        }
-        .google-btn:hover {
-            background-color: rgba(219, 68, 55, 0.1);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-            text-decoration: none;
-        }
+     .google-btn {
+    border: 2px solid #757575;
+    color: #757575;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.google-btn:hover {
+    background-color: rgba(66, 133, 244, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(66, 133, 244, 0.2);
+    text-decoration: none;
+}
 
         @media (max-width: 768px) {
             .login-wrapper {
@@ -97,7 +98,7 @@
 
                 <div class="mb-3">
                     <button type="submit" class="btn w-100 fw-bold text-white rounded-pill custom-btn">
-                        <i class="fas fa-sign-in-alt"></i> {{ __('Login') }}
+                         {{ __('Login') }}
                     </button>
                 </div>
 

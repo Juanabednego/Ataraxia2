@@ -35,7 +35,7 @@ class RegisteredUserController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/login';
 
     public function store(Request $request): RedirectResponse
     {

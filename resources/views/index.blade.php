@@ -191,44 +191,41 @@
     <!-- /Hero Section -->
      
     <!-- Events Section -->
-    <section id="events" class="events section py-5">
-      <div class="container" data-aos="fade-up">
-        <h2 class="text-center fw-bold mb-5">Upcoming Event</h2>
+   <section id="events" class="events section py-5 my-5">
+  <div class="container" data-aos="fade-up">
+    <h2 class="text-center fw-bold mb-5">Upcoming Event</h2>
 
-        <div class="row g-4 justify-content-center">
-          @foreach($events as $event)
-            <div class="col-lg-4 col-md-6">
-              <div class="card h-100 shadow-sm border-0 d-flex flex-column position-relative overflow-hidden">
-                <!-- Sticker Harga -->
-                <div class="sticker-harga position-absolute top-0 start-0 m-3 d-flex flex-column align-items-center justify-content-center text-white text-center">
-                  <small style="font-size: 0.75rem;">HARGA MULAI</small>
-                  <span style="font-size: 1.2rem; font-weight: bold;">
-                    Rp. {{ number_format($event->harga, 0, ',', '.') }}
-                  </span>
-                </div>
-
-                <!-- Sticker Tanggal -->
-                <div class="position-absolute top-0 end-0 m-2 px-3 py-1 bg-dark text-white rounded-pill" style="z-index: 2; font-size: 0.85rem;">
-                  {{ \Carbon\Carbon::parse($event->date)->format('d M Y') }}
-                </div>
-
-                <img src="{{ asset($event->image) }}" class="card-img-top" alt="{{ $event->name }}" style="height: 400px; object-fit: cover;">
-
-                <div class="card-body d-flex flex-column text-center">
-                  <h5 class="card-title mb-3">{{ $event->name }}</h5>
-                  <p>{{ $event->description }}</p> <br>
-
-                  @php
-                    $link = auth()->check() ? route('pilihkursi') : route('login');
-                  @endphp
-                  <a href="{{ route('pilih-kursi', ['event_id' => $event->id]) }}" class="btn-event">Beli Tiket</a>
-                </div>
-              </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center text-center">
+      @foreach($events as $event)
+        <div class="col d-flex justify-content-center">
+          <div class="card h-100 shadow-sm border-0 position-relative overflow-hidden" style="width: 100%; max-width: 340px;">
+            <!-- Sticker Harga -->
+            <div class="sticker-harga position-absolute top-0 start-0 m-3 d-flex flex-column align-items-center justify-content-center text-white text-center">
+              <small style="font-size: 0.75rem;">HARGA MULAI</small>
+              <span style="font-size: 1.2rem; font-weight: bold;">
+                Rp. {{ number_format($event->harga, 0, ',', '.') }}
+              </span>
             </div>
-          @endforeach
+
+            <!-- Sticker Tanggal -->
+            <div class="position-absolute top-0 end-0 m-2 px-3 py-1 bg-dark text-white rounded-pill" style="z-index: 2; font-size: 0.85rem;">
+              {{ \Carbon\Carbon::parse($event->date)->format('d M Y') }}
+            </div>
+
+            <img src="{{ asset($event->image) }}" class="card-img-top" alt="{{ $event->name }}" style="height: 400px; object-fit: cover;">
+
+            <div class="card-body d-flex flex-column text-center">
+              <h5 class="card-title mb-3">{{ $event->name }}</h5>
+              <p>{{ $event->description }}</p>
+              <a href="{{ route('pilih-kursi', ['event_id' => $event->id]) }}" class="btn-event mt-auto">Beli Tiket</a>
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
+      @endforeach
+    </div>
+  </div>
+</section>
+
     <!-- /Events Section -->
 
     <!-- Menu Section -->

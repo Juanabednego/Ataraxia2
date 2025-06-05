@@ -44,16 +44,15 @@
                         <td>{{ number_format($makanan->harga , 0 , ',' , '.') }}</td>
                         <td>
                             <!-- Tombol Edit -->
-                            <button type="button" class="btn btn-warning btn-sm"
-                                 data-bs-toggle="modal"
-                                  data-bs-target="#editMakananModal"
-                                  data-id="{{ $makanan->id }}"
-                                     data-nama="{{ $makanan->nama_makanan }}"
-                                  data-deskripsi="{{ $makanan->deskripsi }}"
-                                 data-harga="{{ $makanan->harga }}"
-                                 data-role="{{ $makanan->role }}">
-                                   Edit
-                                    </button>
+                           <button type="button" class="btn btn-warning btn-sm"
+    data-bs-toggle="modal"
+    data-bs-target="#editMakananModal-{{ $makanan->id }}"
+    data-id="{{ $makanan->id }}"
+    data-nama="{{ $makanan->nama_makanan }}"
+    data-deskripsi="{{ $makanan->deskripsi }}"
+    data-harga="{{ $makanan->harga }}"
+    data-role="{{ $makanan->role }}"
+    data-foto="{{ $makanan->foto }}">Edit</button>
 
 
                             <!-- Tombol Hapus -->
@@ -115,50 +114,57 @@
     </div>
 
    <!-- Modal Edit Makanan/Minuman -->
-<div class="modal fade" id="editMakananModal" tabindex="-1" aria-labelledby="editMakananModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editMakananModalLabel">Edit Makanan/Minuman</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+@foreach($makanans as $makanan)
+  <div class="modal fade" id="editMakananModal-{{ $makanan->id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <form action="{{ route('kelola-menu.update', $makanan->id) }}" method="POST" enctype="multipart/form-data">
+          @csrf
+          @method('PUT')
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Edit Makanan/Minuman</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Nama Makanan/Minuman</label>
+                <input type="text" name="nama_makanan" class="form-control" value="{{ $makanan->nama_makanan }}" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Jenis</label>
+                <select class="form-control" name="role" required>
+                  <option value="makanan" {{ $makanan->role == 'makanan' ? 'selected' : '' }}>Makanan</option>
+                  <option value="minuman" {{ $makanan->role == 'minuman' ? 'selected' : '' }}>Minuman</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Deskripsi</label>
+                <textarea name="deskripsi" class="form-control" rows="3" required>{{ $makanan->deskripsi }}</textarea>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Harga</label>
+                <input type="number" name="harga" class="form-control" value="{{ $makanan->harga }}" required>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Gambar Makanan/Minuman</label>
+                <input type="file" name="foto" class="form-control" accept="image/*">
+                <div class="mt-2 d-flex align-items-center gap-3">
+                  <img src="{{ asset('uploads/' . $makanan->foto) }}" width="80" class="rounded border">
+                  <small class="text-muted">Biarkan kosong jika tidak ingin mengubah gambar</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i> Update</button>
+          </div>
+        </form>
       </div>
-      <form id="editMakananForm" method="POST" action="" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
-        <div class="modal-body">
-        <div class="mb-3">
-  <label for="edit_role" class="form-label">Jenis</label>
-  <select class="form-control" id="edit_role" name="role" required>
-    <option value="makanan">Makanan</option>
-    <option value="minuman">Minuman</option>
-  </select>
-</div>
-
-          <div class="mb-3">
-            <label for="edit_foto" class="form-label">Foto</label>
-            <input type="file" class="form-control" id="edit_foto" name="foto" accept="image/*">
-          </div>
-          <div class="mb-3">
-            <label for="edit_nama_makanan" class="form-label">Nama Makanan/Minuman</label>
-            <input type="text" class="form-control" id="edit_nama_makanan" name="nama_makanan" required>
-          </div>
-          <div class="mb-3">
-            <label for="edit_deskripsi" class="form-label">Deskripsi</label>
-            <textarea class="form-control" id="edit_deskripsi" name="deskripsi" rows="3"></textarea>
-          </div>
-          <div class="mb-3">
-            <label for="edit_harga" class="form-label">Harga</label>
-            <input type="number" class="form-control" id="edit_harga" name="harga" required>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-          <button type="submit" class="btn btn-primary">Update</button>
-        </div>
-      </form>
     </div>
   </div>
-</div>
+@endforeach
 
 
 

@@ -112,7 +112,6 @@
     <div class="mb-3">
           <label for="time" class="form-label">Jam</label>
         <input type="text" name="time" class="form-control" id="time" placeholder="Pilih jam (01:00 - 23:59)" required />
-
         </div>
 
         <div class="house-rules mb-3">

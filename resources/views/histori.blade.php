@@ -254,6 +254,13 @@
                     Catatan: <strong>{{ $reservation->note ?: '-' }}</strong>
                 </div>
 
+                   @if($reservation->status == 'cancelled' && $reservation->reason)
+            <div class="mt-2">
+                <strong>Alasan Penolakan:</strong>
+                <p>{{ $reservation->reason }}</p>
+            </div>
+        @endif
+
                 <div class="status-badge
                     @if($reservation->status == 'pending') status-diproses
                     @elseif($reservation->status == 'cancelled') status-hubungi

@@ -47,15 +47,23 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'phone' => ['required','string','unique:users'], 
-        ]);
-    }
+  protected function validator(array $data)
+{
+    return Validator::make($data, [
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        'password' => ['required', 'string', 'min:8', 'confirmed'],
+        'phone' => [
+            'required',
+            'string',
+            'unique:users',
+            'regex:/^08[0-9]{9,11}$/'
+        ],
+    ], [
+        'phone.regex' => 'Nomor telepon harus diawali 08 dan berjumlah 11-13 digit angka.'
+    ]);
+}
+
 
     /**
      * Create a new user instance after a valid registration.

@@ -14,37 +14,98 @@
             background-color: #f4f6f9;
             font-family: 'Poppins', sans-serif;
         }
-        .table thead {
-            background-color: #fff;
-            font-weight: 600;
-        }
-        .table td, .table th {
-            vertical-align: middle;
-        }
-        .btn {
-            margin-right: 5px;
-        }
         .content-wrapper {
             margin-left: 250px;
             padding: 40px 30px;
             background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
         }
         .page-title {
-            font-size: 28px;
-            font-weight: bold;
-            margin-bottom: 30px;
-            color: #343a40;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #363949;
+            letter-spacing: 1px;
         }
-        .badge {
-            padding: 0.5em 0.75em;
-            font-size: 0.85em;
+        .table {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(60,60,60,0.04);
+            overflow: hidden;
+        }
+        .table thead {
+            background: linear-gradient(90deg, #cfd9df 0%, #e2ebf0 100%);
+            font-weight: 600;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+            padding: 0.85rem 1.2rem;
+        }
+        .table-striped > tbody > tr:nth-of-type(odd) {
+            background-color: #f9fafc;
+        }
+        .table tbody tr:hover {
+            background-color: #e9f2ff !important;
+            transition: background 0.25s;
+        }
+        .action-btns .btn {
+            min-width: 90px;
+            border-radius: 6px;
+            margin-right: 6px;
+            font-size: 0.97rem;
+            box-shadow: none;
+        }
+        .status-text {
+            font-weight: 600;
+            font-size: 1em;
+        }
+        .status-confirmed { color: #047857; }
+        .status-cancelled { color: #991b1b; }
+        .status-pending { color: #b45309; }
+        .text-final {
+            color: #888;
+            font-style: italic;
+            font-size: 0.95em;
         }
         .highlight-reservation {
-            background-color: #2563eb !important; /* biru terang */
-            color: #fff !important;
-            transition: background-color 0.8s, color 0.8s;
+            background: linear-gradient(90deg,#2563eb30 0%,#7dd3fc30 100%) !important;
+            color: #222 !important;
+            transition: background 0.8s, color 0.8s;
+        }
+        .modal-content {
+            border-radius: 1.1rem;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.11);
+        }
+        .modal-header {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .modal-title {
+            font-weight: 600;
+            font-size: 1.13rem;
+        }
+        .modal-footer {
+            border-top: none;
+        }
+        .footer {
+            background: #eef1f5;
+            font-size: 1em;
+        }
+        @media (max-width: 900px) {
+            .content-wrapper {
+                margin-left: 0;
+                padding: 24px 8px;
+            }
+            .page-title {
+                font-size: 1.5rem;
+            }
+        }
+        @media (max-width: 600px) {
+            .table th, .table td {
+                font-size: 0.98rem;
+                padding: 0.5rem 0.6rem;
+            }
         }
     </style>
 </head>
@@ -52,8 +113,8 @@
 @include('layouts.AdminNav')
 
 <body>
-<main id="main" class="main"> 
-<div class="container mt-4">
+<main id="main" class="main">
+<div class="container content-wrapper mt-4">
     <div class="page-title">Kelola Reservasi</div>
 
     @if (session('success'))
@@ -62,7 +123,7 @@
 
     <div class="table-responsive">
         <table class="table table-striped align-middle">
-            <thead class="table-light">
+            <thead>
                 <tr>
                     <th>Nama</th>
                     <th>Email</th>
@@ -82,23 +143,33 @@
                     <td>{{ $res->time }}</td>
                     <td>{{ $res->people }}</td>
                     <td>
-                        <span class="badge bg-{{ $res->status == 'confirmed' ? 'success' : ($res->status == 'cancelled' ? 'danger' : 'warning') }}">
+                        <span class="status-text
+                            {{ $res->status == 'confirmed' ? 'status-confirmed' : 
+                               ($res->status == 'cancelled' ? 'status-cancelled' : 'status-pending') }}">
                             {{ ucfirst($res->status) }}
                         </span>
                     </td>
                     <td>
                         @if($res->status === 'pending')
-                        <button class="btn btn-outline-success btn-sm" onclick="openConfirmModal({{ $res->id }})">Confirm</button>
-                        <button class="btn btn-outline-danger btn-sm" onclick="openCancelModal({{ $res->id }})">Cancel</button>
+                        <div class="action-btns d-flex">
+                            <button class="btn btn-success btn-sm" onclick="openConfirmModal({{ $res->id }})">
+                                <i class="bi bi-check-circle me-1"></i>Confirm
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="openCancelModal({{ $res->id }})">
+                                <i class="bi bi-x-circle me-1"></i>Cancel
+                            </button>
+                        </div>
                         @else
-                        <span class="text-muted small fst-italic">Status Final</span>
+                        <span class="text-final">Status Final</span>
                         @endif
                     </td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
-        {{ $reservations->links() }}
+        <div class="mt-3">
+            {{ $reservations->links() }}
+        </div>
     </div>
 </div>
 </main>
@@ -152,7 +223,7 @@
   </div>
 </div>
 
-<footer id="footer" class="footer mt-auto py-3 bg-light">
+<footer id="footer" class="footer mt-auto py-3">
     <div class="container">
         <div class="text-center text-muted">
             &copy; {{ date('Y') }} <strong><span>NiceAdmin</span></strong>. All Rights Reserved

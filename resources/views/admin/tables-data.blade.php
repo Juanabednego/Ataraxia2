@@ -46,7 +46,15 @@
                                         <td>{{ $booking->status }}</td>
                                         <td>
                                             @if($booking->payment)
-                                            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#paymentModal{{ $booking->id }}">Detail</button>
+                                            <button 
+  style="background-color: #8174A0; color: white; border: none; border-radius: 6px; padding: 8px 16px; cursor: pointer;" 
+  onmouseover="this.style.backgroundColor='#6f6290'" 
+  onmouseout="this.style.backgroundColor='#8174A0'" 
+  data-bs-toggle="modal" 
+  data-bs-target="#paymentModal{{ $booking->id }}">
+  Detail
+</button>
+
                                             @endif
                                         </td>
                                     </tr>

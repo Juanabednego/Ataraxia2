@@ -48,38 +48,41 @@ class KelolaEventController extends Controller
         return redirect()->route('kelola-event')->with('success', 'Event berhasil ditambahkan!');
     }
 
-    public function update(Request $request, $id)
-    {
-        $event = Event::findOrFail($id);
+   public function update(Request $request, $id)
+{
+    $event = Event::findOrFail($id);
 
-        $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-            'date' => 'required|date',
-            'harga' => 'required|numeric|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
+    $request->validate([
+        'name' => 'required',
+        'description' => 'required',
+        'date' => 'required|date',
+        'harga' => 'required|numeric|min:0',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+    ]);
 
-        $data = [
-            'name' => $request->name,
-            'description' => $request->description,
-            'date' => $request->date,
-            'harga' => $request->harga,
-        ];
+    $data = [
+        'name' => $request->name,
+        'description' => $request->description,
+        'date' => $request->date,
+        'harga' => $request->harga,
+    ];
 
-        if ($request->hasFile('image')) {
-            if ($event->image) {
-                Storage::disk('public')->delete($event->image);
-            }
-            $image = $request->file('image');
-            $imagePath = $image->store('events', 'public');
-            $data['image'] = $imagePath;
+    if ($request->hasFile('image')) {
+        // Hapus gambar lama jika ada
+        if ($event->image && file_exists(public_path($event->image))) {
+            unlink(public_path($event->image));
         }
-
-        $event->update($data);
-
-        return redirect()->route('kelola-event')->with('success', 'Event berhasil diperbarui!');
+        $image = $request->file('image');
+        $imageName = time() . '_' . $image->getClientOriginalName();
+        $image->move(public_path('events'), $imageName);
+        $data['image'] = 'events/' . $imageName;
     }
+
+    $event->update($data);
+
+    return redirect()->route('kelola-event')->with('success', 'Event berhasil diperbarui!');
+}
+
 
     public function destroy(Event $event)
     {

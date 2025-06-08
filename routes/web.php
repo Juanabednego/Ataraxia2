@@ -30,6 +30,23 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AdminNotificationController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\PaymentAccountController;
+
+Route::middleware(['auth', 'super_admin'])->group(function () {
+    Route::get('/rekening', [PaymentAccountController::class, 'index'])->name('admin.rekening.index');
+    Route::post('/rekening', [PaymentAccountController::class, 'store'])->name('admin.rekening.store');
+    Route::delete('/rekening/{id}', [PaymentAccountController::class, 'destroy'])->name('admin.rekening.destroy');
+});
+
+
+Route::middleware(['auth', 'super_admin'])->group(function () {
+   Route::get('/kelola-akun', [SuperAdminController::class, 'index'])->name('superadmin.kelola-akun');
+    Route::post('/kelola-akun', [SuperAdminController::class, 'store'])->name('superadmin.kelola-akun.store');
+    Route::delete('/kelola-akun/{id}', [SuperAdminController::class, 'destroy'])->name('superadmin.kelola-akun.destroy');
+    Route::post('/kelola-akun/{id}/restore', [SuperAdminController::class, 'restore'])->name('superadmin.kelola-akun.restore');
+
+});
 
 Route::middleware('guest')->group(function () {
     // Tampilkan form request reset password
@@ -60,6 +77,10 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     })->name('admin.notifications.show');
 
     // Route baru untuk tandai semua notifikasi sudah dibaca via POST (AJAX)
+
+    Route::post('/admin/notifications/mark-read', [AdminNotificationController::class, 'markAsRead'])
+    ->name('admin.notifications.markAsRead');
+
     Route::post('/notifications/mark-read', [AdminNotificationController::class, 'markAllAsRead'])
         ->name('admin.notifications.markRead');
 });
@@ -81,7 +102,7 @@ Route::get('/kelola-about', [AboutSectionAdminController::class, 'index'])->name
 Route::get('/admin/kelola-about', [AboutSectionAdminController::class, 'edit']);
 Route::post('/admin/kelola-about', [AboutSectionAdminController::class, 'update']);
 
-
+Route::get('/review', [ReviewUserController::class, 'index']);
 Route::post('/review', [ReviewUserController::class, 'store'])->name('review.store');
 
 
@@ -146,14 +167,6 @@ Route::get('/footer', [FooterController::class, 'index'])->name('footer');
 
 
 
-
-
-
-Route::get('/index', function () {
-    return view('index');
-})->name('index');
-
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -180,7 +193,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/admin/get-booking-history', [AdminController::class, 'getBookingHistory'])->name('admin.getBookingHistory');
 
 Route::get('/notifikasi-user', [BookingController::class, 'getNotifikasiUser'])
-    ->middleware('auth')
+     ->middleware('auth')
     ->name('load-notifikasi');
 
     Route::get('/notifikasi-reservation', [AdminReservationController::class, 'getNotifikasiReservation'])->name('notif.reservation');
@@ -190,7 +203,6 @@ Route::get('/notifikasi-user', [BookingController::class, 'getNotifikasiUser'])
     Route::get('/kelola-menu', [MakananController::class, 'index'])->name('kelola-menu.index');
     Route::post('/kelola-menu', [MakananController::class, 'store'])->name('kelola-menu.store');
     Route::put('/kelola-menu/{id}', [MakananController::class, 'update'])->name('kelola-menu.update');
-    // Route::delete('/kelola-menu/{id}', [MakananController::class, 'destroy'])->name('kelola-menu.destroy');
     Route::delete('/kelola-menu/{makanan}', [MakananController::class, 'destroy'])->name('kelola-menu.destroy');
 
     

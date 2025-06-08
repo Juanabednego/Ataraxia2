@@ -5,25 +5,28 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Models\Booking;
+use App\Models\PaymentAccount;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class PaymentController extends Controller
 {
-    public function index(Request $request)
-    {
-        $booking_id = $request->query('booking_id');
+   public function index(Request $request)
+{
+    $booking_id = $request->query('booking_id');
 
-        $booking = Booking::where('id', $booking_id)
-            ->where('user_id', Auth::id())
-            ->first();
+    $booking = Booking::where('id', $booking_id)
+        ->where('user_id', Auth::id())
+        ->first();
 
-        if (!$booking) {
-            return redirect()->route('pilih-kursi')->with('error', 'Booking tidak ditemukan atau tidak valid.');
-        }
-
-        return view('payment', compact('booking'));
+    if (!$booking) {
+        return redirect()->route('pilih-kursi')->with('error', 'Booking tidak ditemukan atau tidak valid.');
     }
+
+    $accounts = PaymentAccount::all(); // ambil semua rekening dari DB
+
+    return view('payment', compact('booking', 'accounts'));
+}
 
     public function process(Request $request)
     {

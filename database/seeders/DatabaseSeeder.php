@@ -21,6 +21,15 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin'
         ]);
 
+       User::updateOrCreate([
+    'email' => 'Ataraxia@gmail.com',
+], [
+    'name' => 'Super Admin',
+    'password' => Hash::make('ataraxiabalige'),
+    'role' => 'super_admin'
+]);
+
+
         // Jalankan seeder lainnya
         $this->call([
             ReviewSeeder::class,

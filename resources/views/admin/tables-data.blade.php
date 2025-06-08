@@ -10,7 +10,6 @@
     <link href="{{ asset('admin/assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/assets/css/style.css') }}" rel="stylesheet">
- 
 </head>
 @include('layouts.AdminNav')
     <!-- Main Content -->
@@ -112,10 +111,7 @@
         </div>
     </div>
 </div>
-
-
                                     @endforeach
-
                                     @else
                                     <tr>
                                         <td colspan="6" class="text-center">Tidak ada data booking</td>
@@ -140,9 +136,27 @@
             &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
         </div>
     </footer>
-
+    
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Script Modal Otomatis -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Pastikan Bootstrap sudah loaded
+        function getQueryParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+        var detailId = getQueryParam('detail_id');
+        if (detailId) {
+            var modalEl = document.getElementById('paymentModal' + detailId);
+            if (modalEl) {
+                var modal = new bootstrap.Modal(modalEl);
+                modal.show();
+            }
+        }
+    });
+    </script>
 </body>
 
 </html>

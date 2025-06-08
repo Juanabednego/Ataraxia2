@@ -5,10 +5,26 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Review;
 use App\Models\AdminNotification;
+use App\Models\Event;
+use App\Models\AboutSection; // Pastikan model About sudah ada
+use Illuminate\Support\Facades\Auth;
 
 class ReviewUserController extends Controller
 {
-    
+     public function index()
+    {
+       $reviews = Review::with('user')
+    ->where('status', 'approved')
+    ->where('is_hidden', false)
+    ->latest()
+    ->get();
+    $events = Event::where('status', 'active')
+    ->where('is_hidden', false)
+    ->latest(); 
+
+    $about = AboutSection::first();    // Ambil data tentang kita
+return view('index', compact('reviews', 'events', 'about'));
+    }
     // Simpan review
     public function store(Request $request)
     {
@@ -29,7 +45,8 @@ class ReviewUserController extends Controller
                 'status' => 'pending',
             ]);
 
-            return back()->with('success', 'Review berhasil dikirim dan sedang menunggu persetujuan.');
+            return redirect()->to(url()->previous() . '#review-form')
+        ->with('success', 'Review berhasil dikirim dan sedang menunggu persetujuan');
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Terjadi kesalahan saat mengirimkan review.']);
         }

@@ -14,14 +14,15 @@ class AdminNotificationController extends Controller
         return view('admin.notifications.index', compact('notifications'));
     }
 
-    public function markAsRead($id)
-    {
-        $notif = AdminNotification::findOrFail($id);
-        $notif->is_read = true;
-        $notif->save();
+  public function markAsRead(Request $request)
+{
+    $id = $request->id;
+    $notif = AdminNotification::findOrFail($id);
+    $notif->is_read = 1;
+    $notif->save();
+    return response()->json(['success' => true]);
+}
 
-        return redirect()->route('admin.notifications.index');
-    }
 
     // Tambahkan method untuk tandai semua sudah dibaca (mark all as read)
     public function markAllAsRead(Request $request)

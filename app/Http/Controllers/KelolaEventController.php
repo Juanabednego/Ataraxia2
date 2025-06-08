@@ -98,12 +98,16 @@ class KelolaEventController extends Controller
         return view('BookTable', compact('events'));
     }
 
-    public function publicEvents()
+     public function publicEvents()
     {
-        $reviews = Review::with('user')->where('is_hidden', false)->latest()->get();
-        $events = Event::all();
-        $about = AboutSection::first(); // ambil data our story
-        return view('index', compact('reviews', 'events', 'about'));
+       $reviews = Review::with('user')
+    ->where('status', 'approved')
+    ->where('is_hidden', false)
+    ->latest()
+    ->get();
+    $events = Event::all();
 
+    $about = AboutSection::first();    // Ambil data tentang kita
+return view('index', compact('reviews', 'events', 'about'));
     }
 }

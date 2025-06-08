@@ -72,6 +72,11 @@ class LoginController extends Controller
         if ($user->role === 'admin') {
             return redirect('/indexadmin'); // Admin ke halaman dashboard admin
         }
+
+         if ($user->role === 'super_admin') {
+            return redirect('/indexadmin'); // Admin ke halaman dashboard admin
+        }
+
         return redirect('/'); // User biasa ke halaman booking table
     }
 }

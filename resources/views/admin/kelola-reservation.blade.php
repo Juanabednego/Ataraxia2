@@ -41,6 +41,11 @@
             padding: 0.5em 0.75em;
             font-size: 0.85em;
         }
+        .highlight-reservation {
+            background-color: #2563eb !important; /* biru terang */
+            color: #fff !important;
+            transition: background-color 0.8s, color 0.8s;
+        }
     </style>
 </head>
 
@@ -70,7 +75,7 @@
             </thead>
             <tbody>
                 @foreach($reservations as $res)
-                <tr>
+                <tr id="reservation-row-{{ $res->id }}">
                     <td>{{ $res->name }}</td>
                     <td>{{ $res->email }}</td>
                     <td>{{ $res->date }}</td>
@@ -93,6 +98,7 @@
                 @endforeach
             </tbody>
         </table>
+        {{ $reservations->links() }}
     </div>
 </div>
 </main>
@@ -170,6 +176,25 @@
         const modal = new bootstrap.Modal(document.getElementById('confirmModal'));
         modal.show();
     }
+
+    // AUTO SCROLL & HIGHLIGHT BIRU
+    document.addEventListener("DOMContentLoaded", function() {
+        function getQueryParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+        const reservationId = getQueryParam('reservation_id');
+        if (reservationId) {
+            const row = document.getElementById('reservation-row-' + reservationId);
+            if (row) {
+                row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                row.classList.add('highlight-reservation');
+                setTimeout(() => {
+                    row.classList.remove('highlight-reservation');
+                }, 3000);
+            }
+        }
+    });
 </script>
 </body>
 </html>

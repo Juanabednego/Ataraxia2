@@ -185,43 +185,45 @@
           <h1 style="font-family: 'Dash Horizon', sans-serif">Ataraxia</h1><br>
           <p style="color: white">ATARAKAN PERASAANMU DI ATARAXIA</p>
           <p class="open-hours" style="color: white">We are open from <br> 10:00 - 23:00</p>
+          <a href="/reservation"
+             class="btn btn-lg mt-3"
+             style="background-color:#8174A0; color:rgb(255, 255, 255); border-radius: 30px; padding: 12px 32px; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: all 0.3s;">
+            Reservation
+          </a>
         </div>
       </div>
     </section>
     <!-- /Hero Section -->
      
     <!-- Events Section -->
-   <section id="events" class="events section py-5 my-5">
+<section id="events" class="events section py-5">
   <div class="container" data-aos="fade-up">
     <h2 class="text-center fw-bold mb-5">Upcoming Event</h2>
-
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center text-center">
+    <div class="row justify-content-center">
+      
       @foreach($events as $event)
-        <div class="col d-flex justify-content-center">
-          <div class="card h-100 shadow-sm border-0 position-relative overflow-hidden" style="width: 100%; max-width: 340px;">
-            <!-- Sticker Harga -->
-            <div class="sticker-harga position-absolute top-0 start-0 m-3 d-flex flex-column align-items-center justify-content-center text-white text-center">
-              <small style="font-size: 0.75rem;">HARGA MULAI</small>
-              <span style="font-size: 1.2rem; font-weight: bold;">
-                Rp. {{ number_format($event->harga, 0, ',', '.') }}
-              </span>
-            </div>
-
-            <!-- Sticker Tanggal -->
+        <div class="col-lg-4 col-md-6 mb-4 d-flex">
+          <div class="card shadow-sm border-0 d-flex flex-column position-relative overflow-hidden w-100">
+           
             <div class="position-absolute top-0 end-0 m-2 px-3 py-1 bg-dark text-white rounded-pill" style="z-index: 2; font-size: 0.85rem;">
               {{ \Carbon\Carbon::parse($event->date)->format('d M Y') }}
             </div>
-
             <img src="{{ asset($event->image) }}" class="card-img-top" alt="{{ $event->name }}" style="height: 400px; object-fit: cover;">
-
-            <div class="card-body d-flex flex-column text-center">
+            <div class="card-body d-flex flex-column align-items-center text-center" style="min-height: 320px;">
               <h5 class="card-title mb-3">{{ $event->name }}</h5>
-              <p>{{ $event->description }}</p>
-              <a href="{{ route('pilih-kursi', ['event_id' => $event->id]) }}" class="btn-event mt-auto">Beli Tiket</a>
+              <p class="mb-auto">{{ $event->description }}</p>
+              <div class="harga-mulai mb-3">
+                <small style="font-size: 0.75rem; display: block;">HARGA MULAI</small>
+                <span style="font-size: 1.2rem; font-weight: bold;">
+                  Rp. {{ number_format($event->harga, 0, ',', '.') }}
+                </span>
+              </div>
+              <a href="{{ route('pilih-kursi', ['event_id' => $event->id]) }}" class="btn-event mt-1">Beli Tiket</a>
             </div>
           </div>
         </div>
       @endforeach
+      
     </div>
   </div>
 </section>
@@ -285,72 +287,69 @@
     <section id="testimonials" class="testimonials">
       <div class="container">
         <!-- Review Form -->
-        <div class="row justify-content-center">
-          <div class="col-lg-8 mb-5" data-aos="fade-up">
-            <div class="review-form-container p-4 shadow-sm rounded">
-              <h2 class="mb-4 text-center">Berikan Review Anda!</h2>
-              
-              @auth
-                @if(session('success'))
-                  <div class="alert alert-success alert-dismissible fade show">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                  </div>
-                @endif
+      <div class="row justify-content-center" id="review-form">
+  <div class="col-lg-8 mb-5" data-aos="fade-up">
+    <div class="review-form-container p-4 shadow-sm rounded">
+      <h2 class="mb-4 text-center">Berikan Review Anda!</h2>
+      
+      @auth
+        @if(session('success'))
+          <div class="alert alert-success alert-dismissible fade show">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        @endif
 
-                @if($errors->any())
-                  <div class="alert alert-danger alert-dismissible fade show">
-                    @foreach($errors->all() as $error)
-                      <div>{{ $error }}</div>
-                    @endforeach
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                  </div>
-                @endif
+        @if($errors->any())
+          <div class="alert alert-danger alert-dismissible fade show">
+            @foreach($errors->all() as $error)
+              <div>{{ $error }}</div>
+            @endforeach
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        @endif
 
-                <form action="{{ route('review.store') }}" method="POST">
-                  @csrf
-                  <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+        <form action="{{ route('review.store') }}" method="POST">
+          @csrf
+          <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
 
-                  <div class="mb-4 text-center">
-                    <h5 class="mb-3">Rating Anda</h5>
-                    <div class="rating-stars mb-3 d-flex justify-content-center">
-                      @for ($i = 1; $i <= 5; $i++)
-                        <i class="fas fa-star star-icon {{ $i <= old('rating', 0) ? 'active' : '' }}" 
-                           data-value="{{ $i }}"></i>
-                      @endfor
-                      <input type="hidden" name="rating" id="ratingInput" value="{{ old('rating', 0) }}" required>
-                    </div>
-                  </div>
-
-                  <div class="mb-4">
-                    <textarea class="form-control" name="comment" rows="4" 
-                              placeholder="Bagikan pengalaman anda..." required>{{ old('comment') }}</textarea>
-                  </div>
-
-                  <div class="text-center">
-                    <button type="submit" class="btn btn-primary px-4 py-2">
-                      Kirim Review
-                    </button>
-                  </div>
-                </form>
-              @else
-                <div class="alert alert-info text-center">
-                  Please <a href="{{ route('login') }}"><strong>Login</strong></a> to submit your review.
-                </div>
-              @endauth
+          <div class="mb-4 text-center">
+            <h5 class="mb-3">Rating Anda</h5>
+            <div class="rating-stars mb-3 d-flex justify-content-center">
+              @for ($i = 1; $i <= 5; $i++)
+                <i class="fas fa-star star-icon {{ $i <= old('rating', 0) ? 'active' : '' }}" 
+                   data-value="{{ $i }}"></i>
+              @endfor
+              <input type="hidden" name="rating" id="ratingInput" value="{{ old('rating', 0) }}" required>
             </div>
           </div>
-        </div>
 
-        <!-- Reviews List -->
+          <div class="mb-4">
+            <textarea class="form-control" name="comment" rows="4" 
+                      placeholder="Bagikan pengalaman anda..." required>{{ old('comment') }}</textarea>
+          </div>
+
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary px-4 py-2">
+              Kirim Review
+            </button>
+          </div>
+        </form>
+      @else
+        <div class="alert alert-info text-center">
+          Please <a href="{{ route('login') }}"><strong>Login</strong></a> to submit your review.
+        </div>
+      @endauth
+    </div>
+  </div>
+</div>
+
+<!-- Reviews List -->
+ 
 <div class="row justify-content-center">
   <div class="col-lg-8" data-aos="fade-up">
     <h2 class="mb-4 text-center">Reviews Pengguna</h2>
-
-    @php
-      $visibleCount = 4;
-    @endphp
-
+    @php $visibleCount = 4; @endphp
     @forelse($reviews as $index => $review)
       <div class="review-item mb-4 p-4 bg-white rounded shadow-sm review-block {{ $index >= $visibleCount ? 'd-none extra-review' : '' }}">
         <div class="d-flex justify-content-between align-items-start mb-2">
@@ -360,7 +359,6 @@
               {{ $review->created_at->format('M d, Y H:i') }}
             </small>
           </div>
-
           <div class="rating">
             @for($i = 1; $i <= 5; $i++)
               @if($i <= $review->rating)
@@ -371,7 +369,6 @@
             @endfor
           </div>
         </div>
-
         <p class="mb-0 mt-2">{{ $review->comment }}</p>
       </div>
     @empty
@@ -379,7 +376,6 @@
         No reviews yet. Be the first to review!
       </div>
     @endforelse
-
     @if(count($reviews) > $visibleCount)
       <div class="text-center mt-3">
         <button id="toggleReviewsBtn" class="btn btn-outline-primary btn-sm">
@@ -391,17 +387,22 @@
 </div>
 
 <script>
+  // Script scroll ke form jika ada #review-form pada URL
   document.addEventListener('DOMContentLoaded', function () {
+    if (window.location.hash === '#review-form') {
+      const el = document.getElementById('review-form');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Script toggle review
     const toggleBtn = document.getElementById('toggleReviewsBtn');
     if (toggleBtn) {
       toggleBtn.addEventListener('click', function () {
         const hiddenReviews = document.querySelectorAll('.extra-review');
         const isHidden = hiddenReviews[0]?.classList.contains('d-none');
-
         hiddenReviews.forEach(review => {
           review.classList.toggle('d-none');
         });
-
         toggleBtn.textContent = isHidden ? 'Tutup Semua' : 'Lihat Semua';
       });
     }
@@ -509,54 +510,54 @@
       });
     });
 
-    function loadUserNotifikasi() {
-      $.get("{{ route('load-notifikasi') }}", function (data) {
-        let html = "";
+    // function loadUserNotifikasi() {
+    //   $.get("{{ route('load-notifikasi') }}", function (data) {
+    //     let html = "";
 
-        if (data.length > 0) {
-          $("#notificationBadge").show().text(data.length);
+    //     if (data.length > 0) {
+    //       $("#notificationBadge").show().text(data.length);
 
-          data.forEach(n => {
-            html += `
-              <li>
-                <a href="#" 
-                   class="dropdown-item py-2 px-3 d-flex align-items-start gap-3 hover-highlight view-notif-detail"
-                   data-message="${n.message}" 
-                   data-time="${n.created_at}">
-                  <i class="bi bi-check-circle-fill text-success fs-5 mt-1"></i>
-                  <div class="flex-grow-1">
-                    <div class="fw-semibold text-dark text-truncate-2-lines">${n.message}</div>
-                    <small class="text-muted">${n.created_at}</small> <br>
-                    <small class="text-muted">"Klik to detail"</small>
-                  </div>
-                </a>
-              </li>
-            `;
-          });
+    //       data.forEach(n => {
+    //         html += `
+    //           <li>
+    //             <a href="#" 
+    //                class="dropdown-item py-2 px-3 d-flex align-items-start gap-3 hover-highlight view-notif-detail"
+    //                data-message="${n.message}" 
+    //                data-time="${n.created_at}">
+    //               <i class="bi bi-check-circle-fill text-success fs-5 mt-1"></i>
+    //               <div class="flex-grow-1">
+    //                 <div class="fw-semibold text-dark text-truncate-2-lines">${n.message}</div>
+    //                 <small class="text-muted">${n.created_at}</small> <br>
+    //                 <small class="text-muted">"Klik to detail"</small>
+    //               </div>
+    //             </a>
+    //           </li>
+    //         `;
+    //       });
 
-        } else {
-          html = `<li>
-            <a class="dropdown-item py-2 px-3 text-muted">Tidak ada notifikasi</a>
-          </li>`;
-          $("#notificationBadge").hide();
-        }
+    //     } else {
+    //       html = `<li>
+    //         <a class="dropdown-item py-2 px-3 text-muted">Tidak ada notifikasi</a>
+    //       </li>`;
+    //       $("#notificationBadge").hide();
+    //     }
 
-        $("#notificationDropdownList").html(html);
-      });
-    }
+    //     $("#notificationDropdownList").html(html);
+    //   });
+    // }
 
-    loadUserNotifikasi();
-    setInterval(loadUserNotifikasi, 10000); // 10 detik
+    // loadUserNotifikasi();
+    // setInterval(loadUserNotifikasi, 10000); // 10 detik
 
-    $(document).on("click", ".view-notif-detail", function (e) {
-      e.preventDefault();
-      const message = $(this).data("message");
-      const time = $(this).data("time");
+    // $(document).on("click", ".view-notif-detail", function (e) {
+    //   e.preventDefault();
+    //   const message = $(this).data("message");
+    //   const time = $(this).data("time");
 
-      $("#notificationDetailMessage").text(message);
-      $("#notificationDetailTime").text("Diterima: " + time);
-      $("#notificationDetailModal").modal("show");
-    });
+    //   $("#notificationDetailMessage").text(message);
+    //   $("#notificationDetailTime").text("Diterima: " + time);
+    //   $("#notificationDetailModal").modal("show");
+    // });
     
   </script>
 
@@ -583,7 +584,7 @@
   @endauth
 
   <!-- MODAL DETAIL NOTIFIKASI -->
-  <div class="modal fade" id="notificationDetailModal" tabindex="-1" aria-labelledby="notificationDetailLabel" aria-hidden="true">
+  <!-- <div class="modal fade" id="notificationDetailModal" tabindex="-1" aria-labelledby="notificationDetailLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm">
       <div class="modal-content shadow rounded-3">
         <div class="modal-header border-0">
@@ -598,6 +599,6 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </body>
 </html>

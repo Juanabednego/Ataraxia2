@@ -8,11 +8,34 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminReservationController extends Controller
 {
-    public function index()
-    {
-        $reservations = Reservation::latest()->get();
-        return view('admin.kelola-reservation', compact('reservations'));
+public function index(Request $request)
+{
+    $perPage = 10; // Sesuaikan dengan jumlah per halaman
+    $query = Reservation::latest();
+
+    $reservationId = $request->get('reservation_id');
+    if ($reservationId) {
+        // Ambil semua ID sesuai urutan paginasi
+        $ids = $query->pluck('id')->toArray();
+        $index = array_search($reservationId, $ids);
+
+        if ($index !== false) {
+            // Hitung page
+            $page = floor($index / $perPage) + 1;
+            // Redirect ke page yang benar jika perlu
+            if ($request->get('page', 1) != $page) {
+                return redirect()->route('admin.kelola-reservation.index', [
+                    'reservation_id' => $reservationId,
+                    'page' => $page
+                ]);
+            }
+        }
     }
+
+    $reservations = $query->paginate($perPage);
+    return view('admin.kelola-reservation', compact('reservations'));
+}
+
 
     public function update(Request $request, $id)
     {

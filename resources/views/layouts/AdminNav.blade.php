@@ -116,13 +116,15 @@
                 <!-- Profile Nav -->
                 <li class="nav-item dropdown pe-3">
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                        <img src="{{ asset('assets/img/Roberto.jpg') }}" alt="Profile" class="rounded-circle">
+                        <img src="{{ asset('assets/img/Ataraxialogo.jpg') }}" alt="Profile" class="rounded-circle">
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                        @auth
                         <li class="dropdown-header">
-                            <h6>Roberto Samuel</h6>
-                            <span>Admin</span>
+                            <h6>{{ Auth::user()->name }}</h6>
+                            <span>{{ Auth::user()->role ?? 'User' }}</span>
                         </li>
+                        @endauth
                         <li>
                             <hr class="dropdown-divider">
                         </li>

@@ -10,7 +10,7 @@ class MakananController extends Controller
     public function index()
     {
         $makanans = Makanan::all();
-        return view('admin.kelola-menu', compact('makanans'));
+        return view('admin.Kelola-menu', compact('makanans'));
     }
 
     public function store(Request $request)

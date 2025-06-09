@@ -86,8 +86,8 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
 });
 
 
-Route::get('login/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
-Route::get('login/google/callback', [LoginController::class, 'handleGoogleCallback']);
+Route::get('auth/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
+Route::get('auth/google/callback', [LoginController::class, 'handleGoogleCallback']);
 
 
 Route::get('/seat-builder', [SeatLayoutController::class, 'index'])->name('admin.seat-builder.index');

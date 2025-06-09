@@ -79,4 +79,4 @@ class LoginController extends Controller
 
         return redirect('/'); // User biasa ke halaman booking table
     }
-}
+}   

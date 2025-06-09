@@ -84,7 +84,7 @@
         <input type="hidden" name="booking_id" value="{{ $booking->id }}">
 
 
-            <<!-- PILIH REKENING DARI DATABASE -->
+            <!-- PILIH REKENING DARI DATABASE -->
 <div class="mb-3">
     <label class="form-label">Pilih Rekening Tujuan:</label>
     <select name="payment_method" id="payment_method" class="form-select" required>
@@ -117,7 +117,7 @@
             <input type="file" name="proof_of_payment" accept="image/*" class="form-control" required>
         </div>
 
-        <button type="submit" class="btn btn-primary w-100">Konfirmasi Pembayaran</button>
+        <button type="submit" class="btn btn-success w-100" >Konfirmasi Pembayaran</button>
     </form>
 
     <!-- Tombol Kembali dengan konfirmasi -->

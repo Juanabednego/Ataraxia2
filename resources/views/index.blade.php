@@ -62,7 +62,6 @@
       border: none;
       cursor: pointer;
       text-align: center;
-      box-shadow: 0 4px 15px rgba(122, 38, 128, 0.3);
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
@@ -185,11 +184,11 @@
           <h1 style="font-family: 'Dash Horizon', sans-serif">Ataraxia</h1><br>
           <p style="color: white">ATARAKAN PERASAANMU DI ATARAXIA</p>
           <p class="open-hours" style="color: white">We are open from <br> 10:00 - 23:00</p>
-          <a href="/reservation"
+          <!-- <a href="/reservation"
              class="btn btn-lg mt-3"
              style="background-color:#8174A0; color:rgb(255, 255, 255); border-radius: 30px; padding: 12px 32px; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: all 0.3s;">
             Reservation
-          </a>
+          </a> -->
         </div>
       </div>
     </section>
@@ -330,14 +329,20 @@
           </div>
 
           <div class="text-center">
-            <button type="submit" class="btn btn-primary px-4 py-2">
-              Kirim Ulasan
-            </button>
+
+            <button type="submit" 
+        style="background-color: #8174A0; color: white; border: none; border-radius: 8px; padding: 0.5rem 1.5rem; cursor: pointer; transition: background 0.3s ease;" 
+        onmouseover="this.style.backgroundColor='#6f6290'" 
+        onmouseout="this.style.backgroundColor='#8174A0'">
+  Kirim Ulasan
+</button>
+
+
           </div>
         </form>
       @else
         <div class="alert alert-info text-center">
-          Please <a href="{{ route('login') }}"><strong>Login</strong></a> to submit your review.
+          Tolong <a href="{{ route('login') }}"><strong>Login</strong></a> untuk memberikan review anda.
         </div>
       @endauth
     </div>
@@ -378,9 +383,14 @@
     @endforelse
     @if(count($reviews) > $visibleCount)
       <div class="text-center mt-3">
-        <button id="toggleReviewsBtn" class="btn btn-outline-primary btn-sm">
-          Lihat Semua
-        </button>
+        <button 
+  id="toggleReviewsBtn"
+  style="background-color: transparent; color: #8174A0; border: 1px solid #8174A0; border-radius: 4px; padding: 5px 10px; font-size: 14px; cursor: pointer;"
+  onmouseover="this.style.backgroundColor='#8174A0'; this.style.color='white';"
+  onmouseout="this.style.backgroundColor='transparent'; this.style.color='#8174A0';">
+  Lihat Semua
+</button>
+
       </div>
     @endif
   </div>

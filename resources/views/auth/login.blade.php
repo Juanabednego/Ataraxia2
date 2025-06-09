@@ -26,6 +26,11 @@
     text-decoration: none;
 }
 
+.object-fit-cover {
+    object-fit: cover;
+}
+
+
         @media (max-width: 768px) {
             .login-wrapper {
                 flex-direction: column;
@@ -41,9 +46,9 @@
 @section('content')
 <div class="d-flex min-vh-100 login-wrapper">
     <!-- Left Side: Logo -->
-    <div class="d-flex justify-content-center align-items-center bg-dark login-left" style="width: 50%;">
+    <div class="d-flex justify-content-center align-items-center bg-dark login-left" style="width: 50%; height: 100vh; overflow: hidden;">
         <div class="text-center text-white">
-            <img src="{{ asset('assets/img/Ataraxia.jpg') }}" alt="Ataraxia Logo" class="img-fluid" style="max-width: 80%;">
+            <img src="{{ asset('assets/img/Ataraxia.jpg') }}" alt="Ataraxia Logo" class="w-100 h-100 object-fit-cover">
         </div>
     </div>
 
@@ -71,7 +76,7 @@
                     <input id="password" type="password"
                            class="form-control rounded-pill ps-4 pe-5 @error('password') is-invalid @enderror"
                            name="password" required
-                           placeholder="Password" autocomplete="current-password">
+                           placeholder="Password" autocomplete="new-password">
                     <span id="togglePassword" class="position-absolute top-50 end-0 translate-middle-y me-3 text-muted" style="cursor: pointer;">
                         <i class="fas fa-eye-slash"></i>
                     </span>

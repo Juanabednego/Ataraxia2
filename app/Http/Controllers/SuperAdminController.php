@@ -21,7 +21,7 @@ class SuperAdminController extends Controller
             $users = User::all(); // hanya aktif
         }
 
-        return view('admin.kelola-akun', compact('users', 'filter'));
+        return view('admin.Kelola-akun', compact('users', 'filter'));
     }
 
     // Simpan akun baru

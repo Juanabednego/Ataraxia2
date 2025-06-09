@@ -321,93 +321,132 @@
 
     @include('layouts.footer')
 
-    <script>
-        const eventId = "{{ $eventId }}"; 
-        const seatPrice = @json($seatPrice ?? 0);
-        console.log("Harga kursi dari database:", seatPrice);
-    </script>
+<script>
+    const eventId = "{{ $eventId }}";
 
-    <script>
-        $(document).ready(function() {
-            let selectedSeats = [];
-            const confirmButton = $("#confirmBooking");
+// Konversi seatPrice ke integer agar pasti benar dalam perhitungan
+const seatPrice = parseInt(@json($seatPrice ?? 0));
+const outdoorDiscount = 0.20; // Luar Ruang diskon 20%
+const floor2Discount = 0.10;  // Lantai 2 diskon 10%
 
-            function loadSeats() {
-                $.ajax({
-                    url: "{{ route('pilih-kursi') }}",
-                    type: "GET",
-                    dataType: "json",
-                    success: function(response) {
-                        console.log("Kursi yang sudah dipesan:", response.formattedSeats);
+let selectedSeats = [];
+const confirmButton = $("#confirmBooking");
 
-                        $(".seat").removeClass("selected")
-                            .css("background-color", "black")
-                            .css("cursor", "pointer")
-                            .off("click");
+// Deteksi apakah seatId adalah kursi luar ruang (1oa - 18od)
+function isOutdoorSeat(seatId) {
+    return /^([1-9]|1[0-8])o[a-d]$/.test(seatId);
+}
 
-                        response.formattedSeats.forEach(function(seat) {
-                            $(".seat[data-seat='" + seat + "']")
-                                .addClass("booked")
-                                .css("background-color", "grey")
-                                .css("cursor", "not-allowed")
-                                .off("click");
-                        });
+// Deteksi apakah seatId adalah lantai 2 (pakai pola: angka + s[a-d], ex: 1sa, 1sb, dst)
+function isSecondFloor(seatId) {
+    // Lantai 2: seatId yang ada 'sa', 'sb', 'sc', 'sd' dan nomor urut 1-15
+    return /^([1-9]|1[0-5])s[a-d]$/.test(seatId);
+}
 
-                        $(".seat:not(.booked)").click(function() {
-                            let seat = $(this).data("seat");
+// Fungsi menghitung total harga dengan logika diskon: 
+// - Luar Ruang diskon 20%
+// - Lantai 2 diskon 10%
+// - Lainnya harga normal
+function calculateTotalPrice() {
+    let total = 0;
+    selectedSeats.forEach(seat => {
+        if (isOutdoorSeat(seat)) {
+            total += Math.round(seatPrice * (1 - outdoorDiscount));
+        } else if (isSecondFloor(seat)) {
+            total += Math.round(seatPrice * (1 - floor2Discount));
+        } else {
+            total += seatPrice;
+        }
+    });
+    return total;
+}
 
-                            if ($(this).hasClass("selected")) {
-                                $(this).removeClass("selected");
-                                selectedSeats = selectedSeats.filter(s => s !== seat);
-                            } else {
-                                if (!selectedSeats.includes(seat)) {
-                                    $(this).addClass("selected");
-                                    selectedSeats.push(seat);
-                                }
-                            }
+// Update tampilan kursi & total harga
+function updatePriceAndSeats() {
+    $("#selectedSeats").text(selectedSeats.length > 0 ? selectedSeats.join(', ') : '-');
+    $("#totalPrice").text('Rp ' + calculateTotalPrice().toLocaleString('id-ID'));
+    confirmButton.prop("disabled", selectedSeats.length === 0);
+}
 
-                            $("#selectedSeats").text(selectedSeats.length > 0 ? selectedSeats.join(', ') : '-');
-                            $("#totalPrice").text(`Rp ${selectedSeats.length * seatPrice}`);
-                            confirmButton.prop("disabled", selectedSeats.length === 0);
-                        });
-                    },
-                    error: function(xhr) {
-                        console.error("Gagal mengambil kursi terbaru:", xhr.responseText);
+// Ambil & render ulang kursi dari backend
+function loadSeats() {
+    $.ajax({
+        url: "{{ route('pilih-kursi') }}",
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+            // Reset kursi
+            $(".seat").removeClass("selected")
+                .css("background-color", "black")
+                .css("cursor", "pointer")
+                .off("click");
+
+            // Tandai kursi yang sudah dipesan
+            response.formattedSeats.forEach(function(seat) {
+                $(".seat[data-seat='" + seat + "']")
+                    .addClass("booked")
+                    .css("background-color", "grey")
+                    .css("cursor", "not-allowed")
+                    .off("click");
+            });
+
+            // Event pilih seat (hanya untuk yang tidak booked)
+            $(".seat:not(.booked)").click(function() {
+                let seat = $(this).data("seat");
+                if ($(this).hasClass("selected")) {
+                    $(this).removeClass("selected");
+                    selectedSeats = selectedSeats.filter(s => s !== seat);
+                } else {
+                    if (!selectedSeats.includes(seat)) {
+                        $(this).addClass("selected");
+                        selectedSeats.push(seat);
                     }
-                });
+                }
+                updatePriceAndSeats();
+            });
+        },
+        error: function(xhr) {
+            console.error("Gagal mengambil kursi terbaru:", xhr.responseText);
+        }
+    });
+}
+
+$(document).ready(function() {
+    loadSeats();
+
+    // Konfirmasi booking
+    $("#confirmBooking").click(function() {
+        let selectedSeatsString = selectedSeats.join(', ');
+        let totalHarga = calculateTotalPrice();
+
+        $.post("{{ route('booking.store') }}", {
+            _token: "{{ csrf_token() }}",
+            seats: selectedSeatsString,
+            total_price: totalHarga,
+            event_id: eventId
+        }).done(function(response) {
+            if (response.booking_id) {
+                loadSeats();
+                window.location.href = `/payment?booking_id=${response.booking_id}`;
+            } else {
+                alert("Terjadi kesalahan, silakan coba lagi.");
             }
-
-            loadSeats();
-
-            $("#confirmBooking").click(function() {
-                let selectedSeatsString = selectedSeats.join(', ');
-
-                $.post("{{ route('booking.store') }}", {
-                    _token: "{{ csrf_token() }}",
-                    seats: selectedSeatsString,
-                    total_price: selectedSeats.length * seatPrice,
-                    event_id: eventId
-                }).done(function(response) {
-                    if (response.booking_id) {
-                        loadSeats();
-                        window.location.href = `/payment?booking_id=${response.booking_id}`;
-                    } else {
-                        alert("Terjadi kesalahan, silakan coba lagi.");
-                    }
-                }).fail(function(xhr) {
-                    console.error("Error dari backend:", xhr.responseText);
-                    alert("Gagal menyimpan pemesanan, coba lagi!");
-                });
-            });
-
-            $("#cancelSelection").click(function() {
-                $(".seat.selected").removeClass("selected");
-                selectedSeats = [];
-                $("#selectedSeats").text('-');
-                $("#totalPrice").text('Rp 0');
-                confirmButton.prop("disabled", true);
-            });
+        }).fail(function(xhr) {
+            console.error("Error dari backend:", xhr.responseText);
+            alert("Gagal menyimpan pemesanan, coba lagi!");
         });
-    </script>
+    });
+
+    // Batalkan pilihan
+    $("#cancelSelection").click(function() {
+        $(".seat.selected").removeClass("selected");
+        selectedSeats = [];
+        updatePriceAndSeats();
+    });
+});
+
+</script>
+
+
 </body>
 </html>

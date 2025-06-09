@@ -19,6 +19,8 @@ class PaymentController extends Controller
         ->where('user_id', Auth::id())
         ->first();
 
+
+
     if (!$booking) {
         return redirect()->route('pilih-kursi')->with('error', 'Booking tidak ditemukan atau tidak valid.');
     }

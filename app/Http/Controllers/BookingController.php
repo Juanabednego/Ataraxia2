@@ -46,7 +46,8 @@ class BookingController extends Controller
     // Validasi data yang dikirim
     $request->validate([
         'event_id' => 'required|exists:events,id', // Pastikan event_id valid
-        'seats' => 'required|string'
+        'seats' => 'required|string',
+        'total_price' => 'required|numeric|min:0', // Total price harus ada dan valid
     ]);
 
     // Pastikan user sudah login
@@ -87,7 +88,7 @@ class BookingController extends Controller
             'user_id' => $userId,
             'event_id' => $request->event_id,
             'seats' => json_encode($selectedSeats),
-            'total_price' => $totalPrice, // Total price dihitung dari harga kursi
+            'total_price' => $request->total_price, // Total price dihitung dari harga kursi
             'status' => 'pending' // Status booking masih pending sampai pembayaran terkonfirmasi
         ]);
 

@@ -77,7 +77,7 @@
               </div>
               <div class="ps-3">
                 <h6 class="card-title">Pemesanan Baru</h6>
-                <span class="card-value">27</span>
+               <span class="card-value">{{ $pesananBaruCount }}</span>
                 <a href="/tables-data" class="more-info">
                   More info <i class="bi bi-arrow-right"></i>
                 </a>
@@ -97,7 +97,7 @@
               </div>
               <div class="ps-3">
                 <h6 class="card-title">Event</h6>
-                <span class="card-value">27</span>
+                <span class="card-value">{{ $eventCount }}</span>
                 <a href="/kelola-event" class="more-info">
                   More info <i class="bi bi-arrow-right"></i>
                 </a>
@@ -117,7 +117,7 @@
               </div>
               <div class="ps-3">
                 <h6 class="card-title">Menu</h6>
-                <span class="card-value">27</span>
+              <span class="card-value">{{ $menuCount }}</span>
                 <a href="/kelola-menu" class="more-info">
                   More info <i class="bi bi-arrow-right"></i>
                 </a>
@@ -137,7 +137,7 @@
               </div>
               <div class="ps-3">
                 <h6 class="card-title">Review</h6>
-                <span class="card-value">27</span>
+             <span class="card-value">{{ $reviewCount }}</span>
                 <a href="/kelola-review" class="more-info">
                   More info <i class="bi bi-arrow-right"></i>
                 </a>
@@ -157,7 +157,7 @@
               </div>
               <div class="ps-3">
                 <h6 class="card-title">About</h6>
-                <span class="card-value">27</span>
+                <span class="card-value">{{ $aboutCount }}</span>
                 <a href="/kelola-about" class="more-info">
                   More info <i class="bi bi-arrow-right"></i>
                 </a>
@@ -176,7 +176,7 @@
               </div>
               <div class="ps-3">
                 <h6 class="card-title">Reservation</h6>
-                <span class="card-value">27</span>
+               <span class="card-value">{{ $reservationCount }}</span>
                 <a href="{{ route('admin.index') }}" class="more-info">
                   More info <i class="bi bi-arrow-right"></i>
                 </a>
@@ -231,14 +231,14 @@
       // Dalam implementasi nyata, Anda akan mengganti ini dengan fetch/axios ke endpoint Anda
       function fetchDashboardData() {
         // Simulasi data dari backend
-        const data = {
-          new_orders: 27,
-          events: 27,
-          menus: 27,
-          tables: 27,
-          abouts: 27,
-          reservations: 27
-        };
+        // const data = {
+        //   new_orders: 27,
+        //   events: 27,
+        //   menus: 27,
+        //   tables: 27,
+        //   abouts: 27,
+        //   reservations: 27
+        // };
         
         // Update nilai di dashboard
         document.querySelector('.sales-card .card-value').textContent = data.new_orders;

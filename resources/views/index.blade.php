@@ -331,7 +331,7 @@
 
           <div class="text-center">
             <button type="submit" class="btn btn-primary px-4 py-2">
-              Kirim Review
+              Kirim Ulasan
             </button>
           </div>
         </form>
